@@ -1,0 +1,201 @@
+<div class='ui-g' (resized)="onDivDataTableResized($event)">
+  <div class='ui-g-12'>
+    <div class="card no-margin">
+
+      <div class='p-formgrid p-grid'>
+        <div class='p-field p-grid p-col-6 p-justify-start p-align-center' style='margin-bottom: 1px;margin-left: 1px;'>
+          <h2 style="margin-top: 10px; margin-bottom: 10px;">{{ title | translate }} - {{ 'Browse' | translate }}</h2>
+        </div>
+      </div>
+
+      <hr style="margin-bottom: 30px;">
+
+      <form [formGroup]='userForm'>
+
+        <div class="ui-g p-formgrid p-grid">
+          <div class="ui-g-12 ui-md-6">
+              <div class="ui-fluid ui-g-12 ui-md-3">
+                <label class='ui-fluid p-sm-3'
+                       style='padding: 2px!important;'>{{ 'KodeBuku' | translate }}</label>
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-9" style="padding: 3px;">
+                <input pInputText
+                       type='text'
+                       id='kodeBuku'
+                       name='kodeBuku'
+                       formControlName='kodeBuku'
+                       maxlength=50>
+              </div>
+              
+              <div class="ui-fluid ui-g-12 ui-md-3">
+                <label class='ui-fluid p-sm-3'
+                       style='padding: 2px!important;'>{{ 'NamaBuku' | translate }}</label>
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-9" style="padding: 3px;">
+                <input pInputText
+                       type='text'
+                       id='namaBuku'
+                       name='namaBuku'
+                       formControlName='namaBuku'
+                       maxlength=50>
+              </div>
+
+          </div>
+
+          <!-- <div class="ui-g-12 ui-md-6">
+            
+            <div class="ui-fluid ui-g-12 ui-md-3">
+              <label class='ui-fluid p-sm-3'
+                     style='padding: 2px!important;'>{{ 'GenreBuku' | translate }}</label>
+            </div>
+            <div class="ui-fluid ui-g-12 ui-md-9" style="padding: 3px;">
+              <input pInputText
+                     type='text'
+                     id='genreBuku'
+                     name='genreBuku'
+                     formControlName='genreBuku'
+                     maxlength=50>
+            </div>
+
+        </div> -->
+
+        </div>
+
+        <div class='p-formgrid p-grid'>
+          <div class='p-field p-grid p-col-12 p-align-start p-justify-start' style='margin-bottom: 1px;margin-left: 2px;'>
+              <p-button type='submit' label="{{ 'Cari' | translate }}" styleClass='ui-button-raised ui-button-primary' icon='pi pi-search' iconPos='left' (click)='search()' [style]="{'margin-left': '5px', 'margin-top': '10px'}"></p-button>
+          </div>
+        </div>
+
+    </form>
+
+    <br>
+
+    <div class='p-formgrid p-grid'>
+      <div class='p-field p-grid p-col-12 p-align-start p-justify-start' style='margin-bottom: 1px;margin-left: 2px;'>
+
+        <p-table class='app-primeng-table'
+                 [value]='dataTables'
+                 [totalRecords]='totalRecordsDataTables'
+                 [lazy]='true'
+                 [paginator]='true'
+                 [rows]='numberOfRowsDataTables'
+                 ([loading])='isLoadingResultsDataTables'
+                 (onLazyLoad)='doInstantFilterSearch($event)'
+                 [scrollable]='true'
+                 [style]="{width: dataTablesWidth}"
+                 styleClass="custom_ptable"
+                 [columns]='colsUserDataTables'
+                 [(first)]="firstSearch">
+
+          <ng-template pTemplate='colgroup' let-columns>
+            <colgroup *ngFor='let col of columns; index as i'>
+              <col [ngStyle]="{'width': col.width}">
+            </colgroup>
+          </ng-template>
+        
+          <ng-template pTemplate='header' let-columns>
+            <tr>
+              <th>{{ 'Delete' | translate }}</th>
+
+              <th [pSortableColumn] = 'columns[1].field'>
+                <div [ngStyle]="(columns[1].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                  {{ 'KodeBuku' | translate }}
+                  <p-sortIcon [field]='columns[1].field'></p-sortIcon>  
+                </div>
+              </th>
+  
+              <th [pSortableColumn] = 'columns[2].field'>
+                <div [ngStyle]="(columns[2].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                  {{ 'NamaBuku' | translate }}
+                  <p-sortIcon [field]='columns[2].field'></p-sortIcon>
+                </div>
+              </th>
+  
+              <th [pSortableColumn] = 'columns[3].field'>
+                <div [ngStyle]="(columns[3].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                  {{ 'GenreBuku' | translate }}
+                  <p-sortIcon [field]='columns[3].field'></p-sortIcon>
+                </div>
+              </th>
+  
+              <th [pSortableColumn] = 'columns[4].field'>
+                <div [ngStyle]="(columns[4].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                  {{ 'StockBuku' | translate }}
+                  <p-sortIcon [field]='columns[4].field'></p-sortIcon>
+                </div>
+              </th>
+
+              <th [pSortableColumn] = 'columns[5].field'>
+                <div [ngStyle]="(columns[5].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                  {{ 'HargaJual' | translate }}
+                  <p-sortIcon [field]='columns[5].field'></p-sortIcon>
+                </div>
+              </th>
+                
+            </tr>
+
+          </ng-template>
+
+          <ng-template pTemplate='body' let-row let-columns='columns'>
+            <tr>
+              <td align="center">
+                <button pButton
+                        type='button'
+                        class='ui-button-danger'
+                        icon='pi pi-trash'
+                        iconPos='center'
+                        (click)='delete(row)'></button>
+              </td>
+  
+              <td>
+                <a href='javascript:void(0);' (click)='editDataTables(row)'>
+                  {{row.kodeBuku}}
+                </a>
+              </td>
+              <td>
+                  {{row.namaBuku}}
+              </td>
+              <td>
+                  {{row.dataGenre.namaGenre}}
+              </td>
+              <td>
+                  {{row.stockBuku}}
+              </td>
+              <td>
+                  {{row.hargaBuku}}
+              </td>
+            </tr>
+          </ng-template>
+
+          <ng-template pTemplate='footer'>
+            <tr>
+              <td colspan="8">
+                <div>
+                  <a pTooltip="{{ 'TambahData' | translate }}"
+                     tooltipPosition="bottom"
+                     (click)='addDataTables()'
+                     style="margin-left: 30px;cursor: pointer;">
+  
+                    <i class="fa fa-plus">&nbsp;&nbsp;
+                      <span style="font-family: 'Source Sans Pro', Arial, sans-serif;">
+                        {{ 'TambahData' | translate }}
+                      </span>
+                    </i>
+  
+                  </a>    
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+  
+          <ng-template pTemplate='summary'>
+            Total : {{ totalRecordsDataTables }} records
+          </ng-template>
+        </p-table>
+
+      </div>
+    </div>
+
+  </div>
+</div>
