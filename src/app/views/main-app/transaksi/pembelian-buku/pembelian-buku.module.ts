@@ -28,6 +28,7 @@ import { InfoCustomerModule } from '../../info/customer/info.customer.module';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarbuku.service';
+import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
 
 @NgModule({
   declarations: [
@@ -81,5 +82,6 @@ import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarb
     DialogService,
     MembershipService,
     DaftarBukuService,
+    PembelianBukuService,
   ]})
 export class PembelianBukuModule { }

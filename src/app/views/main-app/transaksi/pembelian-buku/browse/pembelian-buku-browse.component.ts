@@ -26,6 +26,10 @@ import { InvoiceHeader } from 'src/app/pg-resource/transaksi/invoice/model/invoi
 import { InvoiceManualService } from 'src/app/pg-resource/transaksi/invoice/invoice-manual.service';
 import { InvoiceManualComplete } from 'src/app/pg-resource/transaksi/invoice/model/invoice-manual-complete.model';
 
+import { PembelianBukuService, PembelianBukuSorts, PembelianBukuSearchParams} from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
+import { PembelianBukuBrowseModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-browse.model'
+
+
 @Component({
   selector: 'app-pembelian-buku-browse',
   templateUrl: './pembelian-buku-browse.component.html',
@@ -41,7 +45,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
   public userForm: FormGroup;
 
-  public dataTables: InvoiceHeader[] = [];
+  public dataTables: PembelianBukuBrowseModel[] = [];
   public numberOfRowsDataTables = 5;
   public isLoadingResultsDataTables = false;
   public totalRecordsDataTables = 0;
@@ -49,8 +53,8 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
   public pagingSearch: StdPagingRequest = null;
   public firstSearch = 0;
-  public searchParamsSearch: any;
-  public sortSearch: any;
+  public paramsSearch: PembelianBukuSearchParams;
+  public sortSearch: PembelianBukuSorts = null;
 
   // width dari dataTables (untuk kemudian di set di bawah (di onDivDataTableResized) secara dinamis)
   public dataTablesWidth = '0px';
@@ -65,6 +69,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     private uiBlockService: UiBlockService,
     private translateService: TranslateService,
     private invoiceManualService: InvoiceManualService,
+    private pembelianBukuService: PembelianBukuService,
     private feComboConstantService: FEComboConstantService,
     private comboConstantsService: ComboConstantsService,
     private route: ActivatedRoute,
@@ -80,18 +85,18 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
       perPage: this.numberOfRowsDataTables
     };
     this.sortSearch = {
-      nomor: 'asc',
-      tgtrn: 'asc',
-      nama: 'asc',
-      status: 'asc',
-      dpp: 'asc',
-      ppn: 'asc',
+      nomorBon: 'asc',
+      // tgtrn: 'asc',
+      // nama: 'asc',
+      // status: 'asc',
+      // dpp: 'asc',
+      // ppn: 'asc',
     };
-    this.searchParamsSearch = {
-      nomor: null,
-      nama: null,
-      status: null,
-      fltodep: null,
+    this.paramsSearch = {
+      // nomor: null,
+      // nama: null,
+      // status: null,
+      // fltodep: null,
     };
   }
 
@@ -122,11 +127,11 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
       fltodep: [''],
     });
 
-    this.searchParamsSearch = {
-      nomor: this.userForm.controls.nomor.value,
-      nama: this.userForm.controls.nama.value,
-      status: this.userForm.controls.status.value,
-      fltodep: this.userForm.controls.fltodep.value,
+    this.paramsSearch = {
+      // nomor: this.userForm.controls.nomor.value,
+      // nama: this.userForm.controls.nama.value,
+      // status: this.userForm.controls.status.value,
+      // fltodep: this.userForm.controls.fltodep.value,
     };
 
   }
@@ -215,23 +220,30 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
       fltodepFilter = this.userForm.value.fltodep;
     }
 
-    this.searchParamsSearch = {
-      nomor: nomorFilter,
-      customer: namaFilter,
-      status: statusFilter,
-      fltodep: fltodepFilter,
+    this.paramsSearch = {
+      // nomor: nomorFilter,
+      // customer: namaFilter,
+      // status: statusFilter,
+      // fltodep: fltodepFilter,
     };
 
-    this.invoiceManualService
-    .search(this.searchParamsSearch, this.sortSearch, this.pagingSearch)
+    this.pembelianBukuService
+    .search(this.paramsSearch)
     .pipe(
       takeUntil(this.ngUnsubscribe)
     )
     .subscribe(
-      (result: StdResponse<InvoiceHeader[]>) => {
+      (result: StdResponse<PembelianBukuBrowseModel[]>) => {
         this.isLoadingResultsDataTables = false;
         this.uiBlockService.hideUiBlock();
         this.dataTables = result.data;
+
+        this.dataTables.forEach(element => {
+          
+        });
+
+        console.log('dataTables ===>', this.dataTables);
+        
         this.totalRecordsDataTables = result.meta.pagination.dataCount;
 
       },
@@ -252,7 +264,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     if (event) {
       const pagination = PagingHelper.getPaging(event);
 
-      pagination.searchParams = this.searchParamsSearch;
+      pagination.searchParams = this.paramsSearch;
 
       if (pagination.sorts === null) {
         pagination.sorts = this.sortSearch;
@@ -269,13 +281,13 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
       this.isLoadingResultsDataTables = true;
       this.uiBlockService.showUiBlock();
-      this.invoiceManualService
+      this.pembelianBukuService
       .search(pagination.searchParams, pagination.sorts, pagination.paging)
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (result: StdResponse<InvoiceHeader[]>) => {
+        (result: StdResponse<PembelianBukuBrowseModel[]>) => {
           this.isLoadingResultsDataTables = false;
           this.uiBlockService.hideUiBlock();
           this.dataTables = result.data;
@@ -416,11 +428,11 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
           this.firstSearch = browseScreenData.firstSearch;
         }
 
-        this.searchParamsSearch = {
-          nomor: this.userForm.controls.nomor.value,
-          nama: this.userForm.controls.nama.value,
-          status: this.userForm.controls.status.value,
-          fltodep: this.userForm.controls.fltodep.value,
+        this.paramsSearch = {
+          // nomor: this.userForm.controls.nomor.value,
+          // nama: this.userForm.controls.nama.value,
+          // status: this.userForm.controls.status.value,
+          // fltodep: this.userForm.controls.fltodep.value,
         };
     
       }
