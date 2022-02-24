@@ -19,8 +19,8 @@ import { DialogService, SplitButton } from 'primeng';
 import { InfoCustomerComponent } from 'src/app/views/main-app/info/customer/info.customer.component';
 
 @Component({
-  selector: 'app-input-detil-lain-lain',
-  templateUrl: './detil-lain-lain-input.component.html',
+  selector: 'app-input-detil-pembelian-buku',
+  templateUrl: './detil-pembelian-buku-input.component.html',
   encapsulation : ViewEncapsulation.None
 })
 
@@ -83,21 +83,18 @@ export class DetilLainLainInputComponent implements OnInit, OnDestroy {
       qty: [{value: 1, disabled: false}],
       pctdisc: [{value: 0, disabled: false}],
       nilpctdisc: [{value: 0, disabled: true}],
-      nildisc: [{value: 0, disabled: false}],
       netto: [{value: 0, disabled: true}],
-      keterangan: [{value: '', disabled: false}],
     });
   }
 
   private patchValue() {
     if (this.selectedData) {
       this.inputForm.patchValue({
+        daftarBuku:(this.selectedData.daftarBuku == null ? null : this.selectedData.daftarBuku),
         nourut: (this.selectedData.nourut == null ? '0' : this.selectedData.nourut),
-        keterangan: (this.selectedData.keterangan == null ? '' : this.selectedData.keterangan),
         harga: (this.selectedData.harga == null ? 0 : this.selectedData.harga),
         pctdisc: (this.selectedData.pctdisc == null ? 0 : this.selectedData.pctdisc),
         nilpctdisc: (this.selectedData.nilpctdisc == null ? 0 : this.selectedData.nilpctdisc),
-        nildisc: (this.selectedData.nildisc == null ? 0 : this.selectedData.nildisc),
         netto: (this.selectedData.netto == null ? 0 : this.selectedData.netto),
       });
     }
@@ -109,9 +106,7 @@ export class DetilLainLainInputComponent implements OnInit, OnDestroy {
     this.selectedData.harga = this.inputForm.controls.harga.value;
     this.selectedData.pctdisc = this.inputForm.controls.pctdisc.value;
     this.selectedData.nilpctdisc = this.inputForm.controls.nilpctdisc.value;
-    this.selectedData.nildisc = this.inputForm.controls.nildisc.value;
     this.selectedData.netto = this.inputForm.controls.netto.value;
-    this.selectedData.keterangan = this.inputForm.controls.keterangan.value;
   }
 
   public filterBuku(event) {
@@ -146,6 +141,9 @@ export class DetilLainLainInputComponent implements OnInit, OnDestroy {
   }
 
   public selectedBuku() { 
+
+    console.log('selectedBuku ===>',this.inputForm.controls.daftarBuku.value);
+    
 
     this.inputForm.controls.harga.patchValue(this.inputForm.controls.daftarBuku.value.hargaBuku)
     this.inputForm.controls.pctdisc.patchValue(this.inputForm.controls.daftarBuku.value.dataGenre.diskonGenre)
@@ -224,13 +222,19 @@ export class DetilLainLainInputComponent implements OnInit, OnDestroy {
   }
 
   private clearDetilInitial() {
-    // this.inputForm.controls.nildep.patchValue(0);
+    this.inputForm.patchValue({
+      // harga: 0,
+      qty: 1,
+      // pctdisc: 0,
+      // nilpctdisc: 0,
+      // netto: 0,
+    })
   }
 
   public doSave() {
     this.uiBlockService.showUiBlock();
 
-    this.selectedData = new InvoiceDetailLainLain();
+    this.selectedData = new InvoiceDetailLainLain(this.inputForm.value);
     
     this.fillModel();
 
@@ -261,7 +265,7 @@ export class DetilLainLainInputComponent implements OnInit, OnDestroy {
 
   public hitungNetto(){
     this.inputForm.controls.netto.patchValue(
-      (this.inputForm.controls.harga.value - this.inputForm.controls.nilpctdisc.value - this.inputForm.controls.nildisc.value) * this.inputForm.controls.qty.value
+      (this.inputForm.controls.harga.value - this.inputForm.controls.nilpctdisc.value) * this.inputForm.controls.qty.value
     );
   }
 

@@ -7,13 +7,13 @@ import { AppAlertService } from 'src/app/common/common-components/alert/app-aler
 import { DialogService, DynamicDialogRef } from 'primeng';
 import { DefaultLanguageState } from 'src/app/base/default-language/default-language.state';
 import { InvoiceDetailLainLain } from 'src/app/pg-resource/transaksi/invoice/model/invoice-detail-lainlain.model';
-import { DetilLainLainInputComponent } from './input-detil-lain-lain/detil-lain-lain-input.component';
+import { DetilLainLainInputComponent } from './input-detil-pembelian-buku/detil-pembelian-buku-input.component';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  selector: 'app-tabel-detil-lain-lain',
-  templateUrl: './tabel-detil-lain-lain.component.html',
-  styleUrls: ['./tabel-detil-lain-lain.component.scss'],
+  selector: 'app-tabel-detil-pembelian-buku',
+  templateUrl: './tabel-detil-pembelian-buku.component.html',
+  styleUrls: ['./tabel-detil-pembelian-buku.component.scss'],
   providers: [DialogService],
   encapsulation : ViewEncapsulation.None
 })
@@ -52,7 +52,6 @@ export class TabelDetilLainLainComponent implements OnInit, OnDestroy, AfterView
   }
 
   public ngOnInit() {
-    this.initColsDataTables();
     this.initDefaultMultiSort();
   }
 
@@ -65,17 +64,6 @@ export class TabelDetilLainLainComponent implements OnInit, OnDestroy, AfterView
     this.cdRef.detectChanges();
   }
 
-  public initColsDataTables() {
-    this.colsDataTables = [
-      { field: 'nourut', header: 'NoUrut', rtl: true, type: 'string', width: '50px' },
-      { field: 'keterangan', header: 'Keterangan', rtl: false, type: 'string', width: '220px' },
-      { field: 'harga', header: 'Harga', rtl: true, type: 'string', width: '220px' },
-      { field: 'pctdisc', header: 'ProsenDisc', rtl: true, type: 'string', width: '220px' },
-      { field: 'nilpctdisc', header: 'NilaiProsenDisc', rtl: true, type: 'string', width: '220px' },
-      { field: 'nildisc', header: 'NilaiDisc', rtl: true, type: 'string', width: '220px' },
-      { field: 'netto', header: 'Total', rtl: true, type: 'string', width: '220px' },
-    ];
-  }
 
   public initDefaultMultiSort() {
     this.multiSortMeta.push({field: 'nourut', order: 1});

@@ -8,7 +8,6 @@
         [scrollable]='true'
         [style]="{width: dataTablesWidth}"
         styleClass="grid_report"
-        [columns]='colsDataTables'
         [expandedRowKeys]='expandedRowsDataTables'
         [multiSortMeta]="multiSortMeta"
         >
@@ -19,11 +18,12 @@
       <col style='width:50px'>
       <col style='width:80px'>
       <col style='width:120px'>
-      <col style='width:80px'>
       <col style='width:120px'>
       <col style='width:120px'>
-      <col style='width:100px'>
-      <col style='width:220px'>
+      <col style='width:120px'>
+      <col style='width:50px'>
+      <col style='width:150px'>
+      <col style='width:150px'>
     </colgroup>
   </ng-template>
 
@@ -45,53 +45,16 @@
         </table>
       </th>
 
-      <th>
-        <div [ngStyle]="{'text-align': 'center'}">
-          {{ 'NoUrut' | translate }}
-        </div>
-      </th>
+      <th style="text-align: center;"> {{ 'NoUrut' | translate }} </th>
+      <th style="text-align: left;"> {{ 'NamaBuku' | translate }} </th>
+      <th style="text-align: left;"> {{ 'KodeBuku' | translate }} </th>
+      <th style="text-align: left;"> {{ 'GenreBuku' | translate }} </th>
 
-      <th>
-        <div [ngStyle]="{'text-align': 'center'}">
-          {{ 'NamaBuku' | translate }}
-        </div>
-      </th>
+      <th style="text-align: left;"> {{ 'HargaBuku' | translate }} </th>
+      <th style="text-align: center;"> {{ 'NilaiProsenDisc' | translate }} </th>
+      <th style="text-align: center;"> {{ 'QTY' | translate }} </th>
+      <th style="text-align: right;"> {{ 'TotalHarga' | translate }} </th>
 
-      <th>
-        <div [ngStyle]="{'text-align': 'right'}">
-          {{ 'KodeBuku' | translate }}
-        </div>
-      </th>
-
-      <th>
-        <div [ngStyle]="{'text-align': 'right'}">
-          {{ 'GenreBuku' | translate }}
-        </div>
-      </th>
-
-      <th>
-        <div [ngStyle]="{'text-align': 'right'}">
-          {{ 'HargaBuku' | translate }}
-        </div>
-      </th>
-
-      <th>
-        <div [ngStyle]="{'text-align': 'right'}">
-          {{ 'NilaiProsenDisc' | translate }}
-        </div>
-      </th>
-
-      <th>
-        <div [ngStyle]="{'text-align': 'right'}">
-          {{ 'QTY' | translate }}
-        </div>
-      </th>
-
-      <th>
-        <div [ngStyle]="{'text-align': 'left'}">
-          {{ 'TotalHarga' | translate }}
-        </div>
-      </th>
 
     </tr>
 
@@ -134,15 +97,15 @@
       </td>
 
       <td>
-        <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-          <a href='javascript:void(0);' (click)='editDataTables(row)'>
-            {{row.nourut | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
-          </a>
+        <div [ngStyle]="{'width': '100%', 'text-align': 'center'}">
+          {{row.nourut | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
         </div>
       </td>
 
       <td>
-        {{row.daftarBuku.namaBuku}}
+        <a href='javascript:void(0);' (click)='editDataTables(row)'>
+          {{row.daftarBuku.namaBuku}}
+        </a>
       </td>
 
       <td>
@@ -160,26 +123,14 @@
       </td>
 
       <td>
-        <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-          {{row.pctdisc | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
+        <div [ngStyle]="{'width': '100%', 'text-align': 'center'}">
+          {{row.pctdisc | number:'.0'}}
         </div>
       </td>
 
-      <!-- <td>
-        <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-          {{row.nilpctdisc | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
-        </div>
-      </td> -->
-
-      <!-- <td>
-        <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-          {{row.nildisc | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
-        </div>
-      </td> -->
-
       <td>
-        <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-          {{row.qty | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
+        <div [ngStyle]="{'width': '100%', 'text-align': 'center'}">
+          {{row.qty | number:'.0'}}
         </div>
       </td>
 
