@@ -28,16 +28,21 @@ import { InfoCustomerModule } from '../../info/customer/info.customer.module';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarbuku.service';
+import { DetailPembayaranInputComponent } from './input/tabel-detil-pembayaran/input-detil-pembayaran/detail-pembayaran-input.component';
+import { TabelDetailPembayaranComponent } from './input/tabel-detil-pembayaran/tabel-detail-pembayaran.component';
 
 @NgModule({
   declarations: [
     PembelianBukuBrowseComponent,
     PembelianBukuInputComponent,
     TabelDetilLainLainComponent,
+    TabelDetailPembayaranComponent,
+    DetailPembayaranInputComponent,
     DetilLainLainInputComponent,
   ],
   entryComponents: [
     DetilLainLainInputComponent,
+    DetailPembayaranInputComponent,
     InfoCustomerComponent,
   ],
   imports: [

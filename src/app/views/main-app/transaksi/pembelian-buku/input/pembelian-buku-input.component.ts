@@ -32,6 +32,7 @@ import { InfoCustomerComponent } from '../../../info/customer/info.customer.comp
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { Membership } from 'src/app/pg-resource/master/membership/model/membership.model';
 import { AccordionModule } from 'primeng/accordion';
+import { DetailPembayaran } from 'src/app/pg-resource/transaksi/invoice/model/detail-pembayaran.model';
 
 
 @Component({
@@ -62,6 +63,11 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public dataTablesLainLain: InvoiceDetailLainLain[] = [];
   public isLoadingResultsDataTablesLainLain = false;
   public totalRecordsDataTablesLainLain = 0;
+
+  // datatables untuk detil pembayaran
+  public dataTablesPembayaran: DetailPembayaran[] = [];
+  public isLoadingResultsDataTablesPembayaran = false;
+  public totalRecordsDataTablesPembayaran = 0;
 
   // width dari dataTables (untuk kemudian di set di bawah (di onDivDataTableResized) secara dinamis)
   public dataTablesWidth = '0px';

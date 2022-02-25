@@ -90,9 +90,11 @@ export class IndonesiaLabelDictionary {
     Input: 'Input',
     InputDiDialog: 'Input Di Dialog',
     InputDiGrid: 'Input Di Grid',
+    Jumlahpoint: 'Jumlah Point',
     Jenis: 'Jenis',
     JenisAkun: 'Jenis Akun',
     JenisBiayaGL: 'Jenis Biaya GL',
+    Jenispembayaran: 'Jenis Pembayaran',
     JenisPengeluaran: 'Jenis Pengeluaran',
     JenisSubPerkiraan: 'Jenis Sub Perkiraan',
     JenisTransaksi: 'Jenis Transaksi',
@@ -134,6 +136,7 @@ export class IndonesiaLabelDictionary {
     Neraca: 'Neraca',
     Nilai: 'Nilai',
     NilaiRef: 'Nilai Ref.',
+    Nilairupiah: 'Nilai rupiah',
     NoItemSelected: 'Tidak Ada Item yang Dipilih {{0}}',
     Nomor: 'Nomor',
     NomorUrut: 'Nomor Urut',
@@ -558,6 +561,7 @@ export class IndonesiaLabelDictionary {
 
     NilaiAwal: 'Nilai',
     NilaiSetelahDiskon: 'Setelah Discount',
+    Nilaipoint: 'Nilai point',
     Diskon: 'Diskon',
 
     Tarif: 'Tarif',

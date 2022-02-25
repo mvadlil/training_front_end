@@ -516,14 +516,12 @@
           <div class='p-formgrid p-grid' #templateBody>
             <div class='p-field p-grid p-col-12 p-align-start p-justify-start' style='margin-bottom: 1px;margin-left: 2px;'>
           
-              <app-tabel-detil-lain-lain [(dataTables)]="dataTablesLainLain" 
-                                         [isLoadingResultsDataTables]="isLoadingResultsDataTablesLainLain"
-                                         [totalRecordsDataTables]="totalRecordsDataTablesLainLain"
+              <app-tabel-detail-pembayaran [(dataTables)]="dataTablesPembayaran" 
+                                         [isLoadingResultsDataTables]="isLoadingResultsDataTablesPembayaran"
+                                         [totalRecordsDataTables]="totalRecordsDataTablesPembayaran"
                                          [expandedRowsDataTables]="expandedRowsDataTablesLainLain"
-                                         [dataTablesWidth]="dataTablesWidth"
-                                         (dataTablesChange)="detilLainLainChanged()"
-                                         >
-              </app-tabel-detil-lain-lain>
+                                         [dataTablesWidth]="dataTablesWidth" >
+              </app-tabel-detail-pembayaran>
                
             </div>
           </div>
