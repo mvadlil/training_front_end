@@ -368,7 +368,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       namaPembeli : this.inputForm.controls.namaPembeli.value,
       discountHeader: this.inputForm.controls.discHeader.value,
       listBuku : this.dataTablesLainLain,
-      listPembayaran : null,
+      listPembayaran : this.dataTablesPembayaran,
       keterangan: this.inputForm.controls.keterangan.value,
       dataMembership: this.inputForm.controls.membership.value,
     })
