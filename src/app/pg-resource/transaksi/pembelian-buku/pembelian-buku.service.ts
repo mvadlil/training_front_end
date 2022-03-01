@@ -110,7 +110,7 @@ export class PembelianBukuService extends BaseService {
   
   public simpan(model: PembelianBukuCompleteModel): Observable<PembelianBukuCompleteModel> {
     return this.http.post<StdResponse<PembelianBukuCompleteModel>>(this.apiUrl,
-      this.mapperPembelianBukuComplete.toJson(model, 2))
+      this.mapperPembelianBukuComplete.toJson(model, 3))
       .pipe(
         map((res: StdResponse<PembelianBukuCompleteModel>) => {
           return this.convertResponse(res, this.mapperPembelianBukuComplete).data;

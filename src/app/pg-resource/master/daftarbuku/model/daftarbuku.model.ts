@@ -3,10 +3,6 @@ import { Diskon } from "../../diskon/model/diskon.model";
 
 export class DaftarBuku {
 
-  public static readonly fieldMappingHints: StdFieldMappingHint[] = [
-    { model: 'tglcrt', dataType: 'date' },
-    { model: 'tglupd', dataType: 'date' },
-  ];
 
   public kodeBuku: string = null;
   public namaBuku: string = null;
@@ -15,8 +11,9 @@ export class DaftarBuku {
   public stockBuku: number = null;
   public active: boolean = null;
 
-  public id: string;
-  public version: number;
+  public id: string = null;
+
+  public version: number = null;
 
 
   constructor(initial?: Partial<DaftarBuku>) {
