@@ -73,6 +73,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public dataTablesPembayaran: DetailPembayaran[] = [];
   public isLoadingResultsDataTablesPembayaran = false;
   public totalRecordsDataTablesPembayaran = 0;
+  public nilaiKembalian: number = 0;
 
   // width dari dataTables (untuk kemudian di set di bawah (di onDivDataTableResized) secara dinamis)
   public dataTablesWidth = '0px';
@@ -162,11 +163,10 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       ppn: [{value: 0, disabled: true}],
       netto: [{value: 0, disabled: true}],
       totalPembayaran: [{value: 0, disabled: true}],
+      nilaiKembalian: [{value: 0, disabled: true}],
       discHeader: [{value: 0, disabled: this.isViewOnly}],
       keterangan: [{value: '', disabled: this.isViewOnly}],
       
-
-
 
       nomor: [{value: '', disabled: this.isViewOnly}],
       tgtrn: [{value: new Date(), disabled: this.isViewOnly}, Validators.required],
@@ -809,8 +809,9 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     let totalDiscount = 0;
     let totalNetto = 0;
     let totalPembayaran = 0;
-    let totalBayarKeseluruhan = 0;
+    let totalBayar = 0;
     let totalPoint = 0;
+    let nilaiKembalian = 0;
     
     let nildep = 0;
     let jumbul = 1;
@@ -835,7 +836,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       }
     })
     
-    totalBayarKeseluruhan = totalPembayaran + totalPoint;
+    totalBayar = totalPembayaran + totalPoint;
 
     this.inputForm.controls.nildep.patchValue(nildep);
     this.inputForm.controls.jumbul.patchValue(jumbul);
@@ -855,7 +856,11 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     //this.inputForm.controls.netto.patchValue(totalNetto + ppn);
     this.inputForm.controls.netto.patchValue(dpp + ppn);
 
-    this.inputForm.controls.totalPembayaran.patchValue(totalBayarKeseluruhan);
+    this.inputForm.controls.totalPembayaran.patchValue(totalBayar);
+
+    this.nilaiKembalian = totalBayar - totalNetto;
+
+    this.inputForm.controls.nilaiKembalian.patchValue(this.nilaiKembalian);
   }
 
   public detilLainLainChanged() {

@@ -540,6 +540,7 @@ export class IndonesiaLabelDictionary {
     Total: 'Total',
     TotalHarga: 'Total harga',
     TotalPembayaran: 'Total Pembayaran',
+    NilaiKembalian: 'Nilai Kembalian',
 
     Bruto: 'Bruto',
     Netto: 'Netto',
