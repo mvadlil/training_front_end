@@ -831,7 +831,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     this.dataTablesPembayaran.map(item => {
       if (!item.isSelect) {
         totalPembayaran = totalPembayaran + item.nilaiRupiah;
-        totalPoint = item.nilaiPoint * 200;
+        totalPoint = totalPoint + (item.nilaiPoint * 200);
       }
     })
     
