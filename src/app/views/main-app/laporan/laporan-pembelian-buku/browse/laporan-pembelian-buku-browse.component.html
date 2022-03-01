@@ -27,18 +27,6 @@
                          maxlength=50>
                 </div>
                 
-                <div class="ui-fluid ui-g-12 ui-md-3">
-                  <label class='ui-fluid p-sm-3'
-                         style='padding: 2px!important;'>{{ 'KodeMembership' | translate }}</label>
-                </div>
-                <div class="ui-fluid ui-g-12 ui-md-9" style="padding: 3px;">
-                  <input pInputText
-                         type='text'
-                         id='kodeMembership'
-                         name='kodeMembership'
-                         formControlName='kodeMembership'
-                         maxlength=50>
-                </div>
   
             </div>
   
@@ -84,22 +72,27 @@
             </ng-template>
           
             <ng-template pTemplate='header' let-columns>
-              <tr>
-                <th>{{ 'Delete' | translate }}</th>
-  
-                <th [pSortableColumn] = 'columns[1].field'>
-                  <div [ngStyle]="(columns[1].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
-                    {{ 'NamaMember' | translate }}
-                    <p-sortIcon [field]='columns[1].field'></p-sortIcon>  
-                  </div>
-                </th>
+              <tr>  
+                <th [pSortableColumn] = 'columns[2].field'>
+                    <div [ngStyle]="(columns[2].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                      {{ 'Bulan' | translate }}
+                      <p-sortIcon [field]='columns[2].field'></p-sortIcon>
+                    </div>
+                  </th>
     
                 <th [pSortableColumn] = 'columns[2].field'>
                   <div [ngStyle]="(columns[2].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
-                    {{ 'KodeMembership' | translate }}
+                    {{ 'TotalQtyPenjulanBuku' | translate }}
                     <p-sortIcon [field]='columns[2].field'></p-sortIcon>
                   </div>
                 </th>
+
+                <th [pSortableColumn] = 'columns[2].field'>
+                    <div [ngStyle]="(columns[2].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
+                      {{ 'TotalNominalPenjulanBuku' | translate }}
+                      <p-sortIcon [field]='columns[2].field'></p-sortIcon>
+                    </div>
+                  </th>
                   
               </tr>
   
@@ -107,21 +100,15 @@
   
             <ng-template pTemplate='body' let-row let-columns='columns'>
               <tr>
-                <td align="center">
-                  <button pButton
-                          type='button'
-                          class='ui-button-danger'
-                          icon='pi pi-trash'
-                          iconPos='center'
-                          (click)='delete(row)'></button>
-                </td>
-    
+              
                 <td>
-                  <a href='javascript:void(0);' (click)='editDataTables(row)'>
-                    {{row.namaMembership}}
-                  </a>
+                    {{row.kodeMembership}}
                 </td>
   
+                <td>
+                    {{row.kodeMembership}}
+                </td>
+
                 <td>
                     {{row.kodeMembership}}
                 </td>
@@ -129,26 +116,6 @@
               </tr>
             </ng-template>
   
-            <ng-template pTemplate='footer'>
-              <tr>
-                <td colspan="8">
-                  <div>
-                    <a pTooltip="{{ 'TambahData' | translate }}"
-                       tooltipPosition="bottom"
-                       (click)='addDataTables()'
-                       style="margin-left: 30px;cursor: pointer;">
-    
-                      <i class="fa fa-plus">&nbsp;&nbsp;
-                        <span style="font-family: 'Source Sans Pro', Arial, sans-serif;">
-                          {{ 'TambahData' | translate }}
-                        </span>
-                      </i>
-    
-                    </a>    
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
     
             <ng-template pTemplate='summary'>
               Total : {{ totalRecordsDataTables }} records

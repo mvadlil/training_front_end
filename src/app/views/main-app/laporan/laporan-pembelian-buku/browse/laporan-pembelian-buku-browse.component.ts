@@ -239,7 +239,7 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
 
   public initColsUserDataTables() {
     this.colsUserDataTables = [
-      { field: 'hapus', header: 'Delete', rtl: false, type: 'string', width: '50px' },
+      { field: 'hapus', header: 'Delete', rtl: false, type: 'string', width: '150px' },
       { field: 'namaMembership', header: 'namaMembership', rtl: false, type: 'string', width: '250px' },
       { field: 'kodeMembership', header: 'kodeMembership', rtl: false, type: 'string', width: '250px' },
     ];

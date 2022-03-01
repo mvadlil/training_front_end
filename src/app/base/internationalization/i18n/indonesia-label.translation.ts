@@ -536,6 +536,9 @@ export class IndonesiaLabelDictionary {
     TotalInvoice: 'Total invoice',
     TotalPerolehanPoin: 'Total perolehan poin',
 
+    TotalQtyPenjulanBuku:'Total Qty Penjulan Buku',
+    TotalNominalPenjulanBuku: 'Total Nominal Penjulan Buku',
+
     Jumlah: 'Jumlah',
     Total: 'Total',
     TotalHarga: 'Total harga',
