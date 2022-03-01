@@ -41,10 +41,10 @@ export class DetailPembayaranInputComponent implements OnInit, OnDestroy {
   public filteredTraining: any[];
 
   public jenisPembayaran: any = [
-    {value:'tunai', label:'Tunai'},
-    {value:'point', label:'Point'},
-    {value:'kas titipan', label:'Kas Titipan'},
-    {value:'transfer', label:'Transfer'},
+    {value:'Tunai', label:'Tunai'},
+    {value:'Point', label:'Point'},
+    {value:'Kas Titipan', label:'Kas Titipan'},
+    {value:'Transfer', label:'Transfer'},
   ];
 
   // terkait autocomplete
@@ -116,9 +116,6 @@ export class DetailPembayaranInputComponent implements OnInit, OnDestroy {
   public initCombo(){
     this.jenisPembayaran.push( 
       {value:'', label:''},
-      // {value:'point', label:'Point'},
-      // {value:'kas titipan', label:'Kas Titipan'},
-      // {value:'transfer', label:'Transfer'}
       );
   }
 

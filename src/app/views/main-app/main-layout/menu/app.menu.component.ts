@@ -74,6 +74,18 @@ export class AppMenuComponent implements OnInit {
           },
         ],
       },
+      {
+        label: 'Laporan',
+        icon: 'fa fa-fw fa-server',
+        routerLink: ['/laporan'],
+        items: [
+          {
+            label: 'LaporanPembelianBuku',
+            icon: 'fa fa-fw fa-chart-plus',
+            routerLink: ['/laporan/laporan-pembelian-buku'],
+          },
+        ],
+      },
     ];
 
   }

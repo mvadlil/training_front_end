@@ -206,6 +206,7 @@
                 <textarea rows='1'
                           pInputTextarea
                           name='keterangan'
+                          placeholder="Keterangan"
                           formControlName='keterangan'
                           maxlength=300></textarea>
               </div>
@@ -278,6 +279,28 @@
               </div>
             </div>
 
+            <div class="ui-fluid ui-g-12 ui-md-4">
+              <label for="nomor"
+                    class='ui-fluid p-sm-3'
+                    style='padding: 2px!important;'>{{ 'TotalPembayaran' | translate }}</label>
+            </div>
+            <div class="ui-g-12 ui-md-8" style="padding: 0px;">
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+                <p-inputNumber 
+                  mode='decimal'
+                  locale="{{defaultLanguageState.getDefaultLanguage().locale}}"
+                  name='totalPembayaran'
+                  formControlName='totalPembayaran'
+                  maxlength=17
+                  size=auto>
+                </p-inputNumber>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -320,7 +343,8 @@
                                          [isLoadingResultsDataTables]="isLoadingResultsDataTablesPembayaran"
                                          [totalRecordsDataTables]="totalRecordsDataTablesPembayaran"
                                          [expandedRowsDataTables]="expandedRowsDataTablesLainLain"
-                                         [dataTablesWidth]="dataTablesWidth" >
+                                         [dataTablesWidth]="dataTablesWidth"
+                                         (dataTablesChange)="detilLainLainChanged()" >
               </app-tabel-detail-pembayaran>
                
             </div>

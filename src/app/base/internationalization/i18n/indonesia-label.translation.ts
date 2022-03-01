@@ -539,6 +539,7 @@ export class IndonesiaLabelDictionary {
     Jumlah: 'Jumlah',
     Total: 'Total',
     TotalHarga: 'Total harga',
+    TotalPembayaran: 'Total Pembayaran',
 
     Bruto: 'Bruto',
     Netto: 'Netto',
@@ -546,6 +547,9 @@ export class IndonesiaLabelDictionary {
     TotalDiskon: 'Total Diskon',
     Alamat: 'Alamat',
     DepositUsed: 'Deposit Digunakan',
+
+    Laporan: 'Laporan',
+    LaporanPembelianBuku: 'Laporan Penjualan Buku',
 
     Akun: 'Akun',
     NPWP: 'NPWP',
