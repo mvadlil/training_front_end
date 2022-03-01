@@ -380,6 +380,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       keterangan: this.inputForm.controls.keterangan.value,
       dataMembership: this.inputForm.controls.membership.value,
     })
+    console.log('dataToSave ===>', this.dataToSave);
     
     this.uiBlockService.showUiBlock();
     this.pembelianBukuService
