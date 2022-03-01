@@ -21,6 +21,12 @@ import { InvoiceHeader } from 'src/app/pg-resource/transaksi/invoice/model/invoi
 import { InvoiceManualComplete } from 'src/app/pg-resource/transaksi/invoice/model/invoice-manual-complete.model';
 import { InvoiceDetailLainLain } from 'src/app/pg-resource/transaksi/invoice/model/invoice-detail-lainlain.model';
 import { PembelianBukuBrowseModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-browse.model'
+import { PotensiPromo} from 'src/app/pg-resource/transaksi/pembelian-buku/model/potensi-promo.model';
+import { Membership } from 'src/app/pg-resource/master/membership/model/membership.model';
+
+
+import { PembelianBukuCompleteModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-complete.model';
+
 
 @Injectable()
 export class PembelianBukuService extends BaseService {
@@ -42,6 +48,9 @@ export class PembelianBukuService extends BaseService {
 
   private mapperPembelianBukuBrowse:
   StdModelMapper<PembelianBukuBrowseModel> = new StdModelMapper<PembelianBukuBrowseModel>(PembelianBukuBrowseModel);
+
+  private mapperPotensiPromo: StdModelMapper<PotensiPromo> = new StdModelMapper<PotensiPromo>(PotensiPromo);
+  private mapperPembelianBukuComplete: StdModelMapper<PembelianBukuCompleteModel> = new StdModelMapper<PembelianBukuCompleteModel>(PembelianBukuCompleteModel);
 
 
   constructor(private http: HttpClient, 
@@ -81,6 +90,50 @@ export class PembelianBukuService extends BaseService {
   private requestUrl(extraUri?: string): string {
     return this.apiUrl + (extraUri ? '/' + extraUri : '');
   }
+
+
+
+
+  public checkPotensiPromo(model: Membership): Observable<StdResponse<PotensiPromo>> {
+
+    return this.http.get<StdResponse<PotensiPromo>>(this.apiUrl + '/check-lima-pembeli-pertama', {
+      params: (new HttpParams()).set('idMembership', model.id)
+    }).pipe(
+      map((res: StdResponse<PotensiPromo>) => {
+        let tmp = this.convertResponse(res, this.mapperPotensiPromo);
+        return tmp;
+      }),
+      catchError(res => this.handleError(res, this.appAlertService, this.defaultLanguageState, this.router, this.messageTranslator))
+    );
+  }
+
+  
+  public simpan(model: PembelianBukuCompleteModel): Observable<PembelianBukuCompleteModel> {
+    return this.http.post<StdResponse<PembelianBukuCompleteModel>>(this.apiUrl,
+      this.mapperPembelianBukuComplete.toJson(model, 2))
+      .pipe(
+        map((res: StdResponse<PembelianBukuCompleteModel>) => {
+          return this.convertResponse(res, this.mapperPembelianBukuComplete).data;
+        }),
+        catchError((res: StdResponse<PembelianBukuCompleteModel>) => {
+          return this.handleError(res, this.appAlertService, this.defaultLanguageState, this.router, this.messageTranslator);
+        })
+      );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public invoiceBelumLunas(idMi010: string): Observable<StdResponse<InvoiceHeader[]>> {
 
@@ -200,7 +253,8 @@ export class PembelianBukuService extends BaseService {
 
 export interface PembelianBukuSearchParams {
   nomorBon?: string;
-  // namaPembeli?: string;
+  tanggalAwal?: Date;
+  tanggalAkhir?: Date;
 }
 
 export interface PembelianBukuSorts {

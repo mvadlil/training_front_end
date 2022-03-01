@@ -14,7 +14,6 @@ import { StdMessageTranslator } from 'src/app/common/common-services/standar-api
 import { Membership } from './model/membership.model';
 import { SaldoMember } from 'src/app/pg-resource/master/membership/model/saldo-member.model';
 
-
 @Injectable()
 export class MembershipService extends BaseService {
 
@@ -32,7 +31,6 @@ export class MembershipService extends BaseService {
               private defaultLanguageState: DefaultLanguageState,
               private router: Router,
               private appAlertService: AppAlertService) {
-
     super();
 
   }
@@ -79,6 +77,7 @@ export class MembershipService extends BaseService {
     );
   }
 
+  
 
 
 

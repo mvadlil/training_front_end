@@ -113,6 +113,11 @@
                     </p-inputNumber>
                   </div>
 
+
+                  <div class="ui-fluid ui-g-12">
+                    <label *ngIf="inputForm.value.flagDapatPromo5PembeliPertama" tyle='padding: 2px!important;'>{{ 'Berpotensimendapatkanpromo' | translate }}</label>
+                    <label *ngIf="!inputForm.value.flagDapatPromo5PembeliPertama" tyle='padding: 2px!important;'>{{ 'MaafAndaTidakBerpotensimendapatkanpromo' | translate }}</label>
+                  </div>
                  
 
                 </p-accordionTab>

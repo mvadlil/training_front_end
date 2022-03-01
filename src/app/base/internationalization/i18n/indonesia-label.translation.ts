@@ -387,11 +387,15 @@ export class IndonesiaLabelDictionary {
     DetailTemplateJurnal: 'Detil Jurnal',
 
     DariTemplate: 'Dari Template',
-
+    Berpotensimendapatkanpromo: 'Berpotensi mendapatkan promo',
+    MaafAndaTidakBerpotensimendapatkanpromo: 'Maaf anda tidak berpotensi mendapatkan promo',
     Kosong: 'Kosong',
     TanggalMulai: 'Tanggal Mulai',
     TanggalAkhir: 'Tanggal Akhir',
     DiulangTiap: 'Diulang Tiap',
+    TanggalPembelian: 'Tanggal Pembelian',
+    NomorBon : 'Nomor Bon',
+    TotalPembelian : 'Total Pembelian',
 
     Bulan: 'Bulan',
     Minggu: 'Minggu',
@@ -726,6 +730,7 @@ export class IndonesiaLabelDictionary {
     // fadlil - training
     NamaMember: 'Nama Member',
     NomorTelepon: 'Nomor Telepon',
+
 
   };
 

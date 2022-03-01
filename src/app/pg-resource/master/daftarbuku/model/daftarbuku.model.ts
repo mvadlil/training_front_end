@@ -15,24 +15,9 @@ export class DaftarBuku {
   public stockBuku: number = null;
   public active: boolean = null;
 
-  // untuk input di grid
-  public keyIn: string = null;
-  public isEdit: string = 'N';
-  public isError: string = 'N';
-  public errorMsg: string = null;
-  public editMode: string = null;
-  public isDeleted: boolean = false;
-  public isSelect: boolean = false;
+  public id: string;
+  public version: number;
 
-  // harus ada di setiap model
-  public id: string = null;
-  public version: number = null;
-  public usrcrt: string = null;
-  public tglcrt: Date = null;
-  public jamcrt: string = null;
-  public usrupd: string = null;
-  public tglupd: Date = null;
-  public jamupd: string = null;
 
   constructor(initial?: Partial<DaftarBuku>) {
     Object.assign(this, initial);

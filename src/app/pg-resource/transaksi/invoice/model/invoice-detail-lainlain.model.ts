@@ -22,6 +22,7 @@ export class InvoiceDetailLainLain {
 
   public daftarBuku: DaftarBuku = new DaftarBuku();
   public qty: number = 1;
+  public persenDiscBuku: number =0;
 
   // untuk input di grid
   public keyIn: string = null;
