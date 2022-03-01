@@ -32,6 +32,7 @@ import { InfoCustomerComponent } from '../../../info/customer/info.customer.comp
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { Membership } from 'src/app/pg-resource/master/membership/model/membership.model';
 import { AccordionModule } from 'primeng/accordion';
+import { DetailPembayaran } from 'src/app/pg-resource/transaksi/invoice/model/detail-pembayaran.model';
 
 import { SaldoMember } from 'src/app/pg-resource/master/membership/model/saldo-member.model';
 import { PembelianBukuCompleteModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-complete.model';
@@ -69,6 +70,12 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public dataTablesLainLain: InvoiceDetailLainLain[] = [];
   public isLoadingResultsDataTablesLainLain = false;
   public totalRecordsDataTablesLainLain = 0;
+
+  // datatables untuk detil pembayaran
+  public dataTablesPembayaran: DetailPembayaran[] = [];
+  public isLoadingResultsDataTablesPembayaran = false;
+  public totalRecordsDataTablesPembayaran = 0;
+  public nilaiKembalian: number = 0;
 
   // width dari dataTables (untuk kemudian di set di bawah (di onDivDataTableResized) secara dinamis)
   public dataTablesWidth = '0px';
@@ -158,11 +165,11 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       dpp: [{value: 0, disabled: true}],
       ppn: [{value: 0, disabled: true}],
       netto: [{value: 0, disabled: true}],
+      totalPembayaran: [{value: 0, disabled: true}],
+      nilaiKembalian: [{value: 0, disabled: true}],
       discHeader: [{value: 0, disabled: this.isViewOnly}],
       keterangan: [{value: '', disabled: this.isViewOnly}],
       
-
-
 
       nomor: [{value: '', disabled: this.isViewOnly}],
       tgtrn: [{value: new Date(), disabled: this.isViewOnly}, Validators.required],
@@ -227,6 +234,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
         dpp: (this.selectedData.dpp === null ? '' : this.selectedData.dpp),
         ppn: (this.selectedData.ppn === null ? '' : this.selectedData.ppn),
         netto: (this.selectedData.netto === null ? '' : this.selectedData.netto),
+        totalPembayaran: (this.selectedData.totalPembayaran === null ? '' : this.selectedData.totalPembayaran),
         depused: (this.selectedData.depused === null ? '' : this.selectedData.depused),
         fltodep: (this.selectedData.fltodep ? 'Y' : 'T'),
         nildep: (this.selectedData.nildep === null ? '' : this.selectedData.nildep),
@@ -776,6 +784,10 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     let totalBruto = 0;
     let totalDiscount = 0;
     let totalNetto = 0;
+    let totalPembayaran = 0;
+    let totalBayar = 0;
+    let totalPoint = 0;
+    let nilaiKembalian = 0;
     
     let nildep = 0;
     let jumbul = 1;
@@ -792,6 +804,15 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
         nildep = nildep + item.netto;
       }
     })
+
+    this.dataTablesPembayaran.map(item => {
+      if (!item.isSelect) {
+        totalPembayaran = totalPembayaran + item.nilaiRupiah;
+        totalPoint = totalPoint + (item.nilaiPoint * 200);
+      }
+    })
+    
+    totalBayar = totalPembayaran + totalPoint;
 
     this.inputForm.controls.nildep.patchValue(nildep);
     this.inputForm.controls.jumbul.patchValue(jumbul);
@@ -810,6 +831,12 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     this.inputForm.controls.ppn.patchValue(ppn);
     //this.inputForm.controls.netto.patchValue(totalNetto + ppn);
     this.inputForm.controls.netto.patchValue(dpp + ppn);
+
+    this.inputForm.controls.totalPembayaran.patchValue(totalBayar);
+
+    this.nilaiKembalian = totalBayar - totalNetto;
+
+    this.inputForm.controls.nilaiKembalian.patchValue(this.nilaiKembalian);
   }
 
   public detilLainLainChanged() {

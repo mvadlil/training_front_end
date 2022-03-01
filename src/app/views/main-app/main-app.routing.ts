@@ -71,6 +71,15 @@ const routes: Routes = [
         loadChildren: () => import('./transaksi/pembelian-buku/pembelian-buku.module')
                                    .then((m) => m.PembelianBukuModule),
       },
+      {
+        path: 'laporan/laporan-pembelian-buku',
+        data: {
+          breadcrumb: 'LaporanPembelianBuku',
+          menucode: '003002'
+        },
+        loadChildren: () => import('./laporan/laporan-pembelian-buku/laporan-pembelian-buku.module')
+                                   .then((m) => m.LaporanPembelianBukuModule),
+      },
     ]
   }
 ];

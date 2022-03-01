@@ -211,6 +211,7 @@
                 <textarea rows='1'
                           pInputTextarea
                           name='keterangan'
+                          placeholder="Keterangan"
                           formControlName='keterangan'
                           maxlength=300></textarea>
               </div>
@@ -283,6 +284,50 @@
               </div>
             </div>
 
+            <div class="ui-fluid ui-g-12 ui-md-4">
+              <label for="nomor"
+                    class='ui-fluid p-sm-3'
+                    style='padding: 2px!important;'>{{ 'TotalPembayaran' | translate }}</label>
+            </div>
+            <div class="ui-g-12 ui-md-8" style="padding: 0px;">
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+                <p-inputNumber 
+                  mode='decimal'
+                  locale="{{defaultLanguageState.getDefaultLanguage().locale}}"
+                  name='totalPembayaran'
+                  formControlName='totalPembayaran'
+                  maxlength=17
+                  size=auto>
+                </p-inputNumber>
+              </div>
+            </div>
+
+            <div class="ui-fluid ui-g-12 ui-md-4">
+              <label for="nomor"
+                    class='ui-fluid p-sm-3'
+                    style='padding: 2px!important;'>{{ 'NilaiKembalian' | translate }}</label>
+            </div>
+            <div class="ui-g-12 ui-md-8" style="padding: 0px;">
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+              </div>
+              <div class="ui-fluid ui-g-12 ui-md-4" style="padding: 3px;">
+                <p-inputNumber 
+                  mode='decimal'
+                  locale="{{defaultLanguageState.getDefaultLanguage().locale}}"
+                  name='nilaiKembalian'
+                  formControlName='nilaiKembalian'
+                  maxlength=17
+                  size=auto>
+                </p-inputNumber>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -321,15 +366,13 @@
           <div class='p-formgrid p-grid' #templateBody>
             <div class='p-field p-grid p-col-12 p-align-start p-justify-start' style='margin-bottom: 1px;margin-left: 2px;'>
           
-              <!-- <app-tabel-detil-lain-lain 
-                [(dataTables)]="dataTablesLainLain" 
-                [isLoadingResultsDataTables]="isLoadingResultsDataTablesLainLain"
-                [totalRecordsDataTables]="totalRecordsDataTablesLainLain"
-                [expandedRowsDataTables]="expandedRowsDataTablesLainLain"
-                [dataTablesWidth]="dataTablesWidth"
-                (dataTablesChange)="detilLainLainChanged()"
-              >
-              </app-tabel-detil-lain-lain> -->
+              <app-tabel-detail-pembayaran [(dataTables)]="dataTablesPembayaran" 
+                                         [isLoadingResultsDataTables]="isLoadingResultsDataTablesPembayaran"
+                                         [totalRecordsDataTables]="totalRecordsDataTablesPembayaran"
+                                         [expandedRowsDataTables]="expandedRowsDataTablesLainLain"
+                                         [dataTablesWidth]="dataTablesWidth"
+                                         (dataTablesChange)="detilLainLainChanged()" >
+              </app-tabel-detail-pembayaran>
                
             </div>
           </div>
@@ -353,7 +396,7 @@
         styleClass='ui-button-raised float-left'
         icon='pi pi-save'
         iconPos='left' (onClick)='Save()'
-        [disabled]='!inputForm.valid || isViewOnly'
+        [disabled]='!inputForm.valid || isViewOnly || nilaiKembalian < 0'
         [style]="{'margin-top': '10px'}">
       </p-button>
 

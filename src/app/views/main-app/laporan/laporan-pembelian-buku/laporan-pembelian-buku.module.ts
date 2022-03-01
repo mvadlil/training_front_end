@@ -14,12 +14,7 @@ import { SplitButtonModule } from 'primeng/splitbutton';
 import { GlComboConstantService } from 'src/app/pg-resource/constants/combo.constants.service';
 import { CarouselModule } from 'primeng/carousel';
 import { PipeModule } from 'src/app/base/pipe/pipe.module';
-import { InvoiceManualRoutingModule } from './pembelian-buku.routing';
 import { InvoiceManualService } from 'src/app/pg-resource/transaksi/invoice/invoice-manual.service';
-import { PembelianBukuBrowseComponent } from './browse/pembelian-buku-browse.component';
-import { PembelianBukuInputComponent } from './input/pembelian-buku-input.component';
-import { TabelDetilLainLainComponent } from './input/tabel-detil-pembelian-buku/tabel-detil-pembelian-buku.component';
-import { DetilLainLainInputComponent } from './input/tabel-detil-pembelian-buku/input-detil-pembelian-buku/detil-pembelian-buku-input.component';
 import { CustomerService } from 'src/app/pg-resource/master/customer/customer.service';
 import { TranslateMessageService } from 'src/app/common/common-services/translate.message.service';
 import { ComboConstantsService } from 'src/app/pg-resource/master/common/combo-constants/combo.constants.service';
@@ -28,22 +23,15 @@ import { InfoCustomerModule } from '../../info/customer/info.customer.module';
 import {InputSwitchModule} from 'primeng/inputswitch';
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarbuku.service';
-import { DetailPembayaranInputComponent } from './input/tabel-detil-pembayaran/input-detil-pembayaran/detail-pembayaran-input.component';
-import { TabelDetailPembayaranComponent } from './input/tabel-detil-pembayaran/tabel-detail-pembayaran.component';
 import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
+import { LaporanPembelianBrowseComponent } from './browse/laporan-pembelian-buku-browse.component';
+import { LaporanPembelianBukuRoutingModule } from './laporan-pembelian-buku.routing';
 
 @NgModule({
   declarations: [
-    PembelianBukuBrowseComponent,
-    PembelianBukuInputComponent,
-    TabelDetilLainLainComponent,
-    TabelDetailPembayaranComponent,
-    DetailPembayaranInputComponent,
-    DetilLainLainInputComponent,
+    LaporanPembelianBrowseComponent,
   ],
   entryComponents: [
-    DetilLainLainInputComponent,
-    DetailPembayaranInputComponent,
     InfoCustomerComponent,
   ],
   imports: [
@@ -56,7 +44,7 @@ import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-bu
     ButtonModule,
     InputTextModule,
     CalendarModule,
-    InvoiceManualRoutingModule,
+    LaporanPembelianBukuRoutingModule,
     RadioButtonModule,
     TabViewModule,
     DropdownModule,
@@ -75,7 +63,7 @@ import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-bu
     InputSwitchModule,
   ],
   exports: [
-    PembelianBukuInputComponent,
+    LaporanPembelianBrowseComponent,
   ],
   providers: [
     TranslateMessageService,
@@ -89,4 +77,4 @@ import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-bu
     DaftarBukuService,
     PembelianBukuService,
   ]})
-export class PembelianBukuModule { }
+export class LaporanPembelianBukuModule { }

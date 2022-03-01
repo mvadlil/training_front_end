@@ -22,6 +22,7 @@ export class InvoiceHeader {
   public dpp: number = 0;
   public ppn: number = 0;
   public netto: number = 0;
+  public totalPembayaran: number = 0;
   public depused: number = 0;
   public fltodep: boolean = true;
   public nildep: number = 0;
