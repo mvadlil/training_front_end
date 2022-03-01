@@ -35,6 +35,8 @@ import { AccordionModule } from 'primeng/accordion';
 
 import { SaldoMember } from 'src/app/pg-resource/master/membership/model/saldo-member.model';
 import { PembelianBukuCompleteModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-complete.model';
+import { PotensiPromo} from 'src/app/pg-resource/transaksi/pembelian-buku/model/potensi-promo.model';
+import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
 
 @Component({
   selector: 'app-pembelian-buku-input',
@@ -109,8 +111,8 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     private translateMessageService: TranslateMessageService,
     private feComboConstantService: FEComboConstantService,
     private comboConstantsService: ComboConstantsService,
-    private customerService: CustomerService,
     private membershipService: MembershipService,
+    private pembelianBukuService: PembelianBukuService,
   ) {
   }
 
@@ -118,7 +120,6 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     this.breadCrumbService.sendReloadInfo('reload');
     this.initInputForm();
     this.initRadioButtonDeposit();
-    this.initComboStatus();
     this.dataBridging();
 
     this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
@@ -143,12 +144,14 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   private initInputForm() {
     this.inputForm = this.fb.group({
    
-      kasTitipan: [{value: 0, disabled: this.isViewOnly}],
-      pointMember: [{value: 0, disabled: this.isViewOnly}],
-      kodeMember: [{value: '', disabled: this.isViewOnly}],
+      kasTitipan: [{value: 0, disabled: true}],
+      pointMember: [{value: 0, disabled: true}],
+      kodeMember: [{value: '', disabled: true}],
       namaPembeli: [{value: '', disabled: this.isViewOnly}],
       namaMember: [{value: '', disabled: this.isViewOnly}],
       membership: [{value: new Membership(), disabled: this.isViewOnly}],
+      flagDapatPromo5Pertama: [{value: null, disabled: true}],
+
 
       bruto: [{value: 0, disabled: true}],
       totdisc: [{value: 0, disabled: true}],
@@ -207,36 +210,6 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     );
   }
 
-  private initComboStatus() {
-    this.uiBlockService.showUiBlock();
-
-    const searchParams = {
-      rectyp: 'INVSTAT',
-    };
-    const sort: any = {
-      rectxt: 'asc',
-    };
-
-    this.comboConstantsService
-      .search(searchParams, sort)
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
-      .toPromise()
-      .then(
-        (result: StdResponse<ComboConstants[]>) => {
-          this.uiBlockService.hideUiBlock();
-
-          this.comboStatus = result.data.map(
-            item => new Object({label: item.rectxt, value: item.reccode })
-          );
-  
-        },
-        (error) => {
-          this.uiBlockService.hideUiBlock();
-        },
-      );
-  }
 
   private patchValue() {
     if (this.selectedData) {
@@ -363,8 +336,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
 
   private bentukDataUntukDisimpan(): InvoiceManualComplete {
 
-    this.fillModel();
-
+    
     // bersihkan data yang baru diinput tapi dihapus oleh user (isDeleted = true dan id nya kosong)
     // detail jurnal
     for(let i = this.dataTablesLainLain.length -1; i >= 0 ; i--){
@@ -372,6 +344,8 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
         this.dataTablesLainLain.splice(i, 1);
       }
     }
+    
+    this.fillModel();
 
     const transaksiKomplit = new InvoiceManualComplete();
     transaksiKomplit.header = this.selectedData;
@@ -382,63 +356,37 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
 
   public doSaveSave() {
     
-    const transaksiKomplit = this.bentukDataUntukDisimpan(); 
+    this.dataToSave = new PembelianBukuCompleteModel({
+      namaPembeli : this.inputForm.controls.namaPembeli.value,
+      discountHeader: this.inputForm.controls.discHeader.value,
+      listBuku : this.dataTablesLainLain,
+      listPembayaran : null,
+      keterangan: this.inputForm.controls.keterangan.value,
+      dataMembership: this.inputForm.controls.membership.value,
+    })
     
-    // this.uiBlockService.showUiBlock();s
-  //   this.invoiceManualService
-  //   .add(transaksiKomplit).pipe(takeUntil(this.ngUnsubscribe))
-  //   .subscribe(
-  //     (result) => {
-  //       // this.uiBlockService.hideUiBlock();
+    this.uiBlockService.showUiBlock();
+    this.pembelianBukuService
+    .simpan(this.dataToSave).pipe(takeUntil(this.ngUnsubscribe))
+    .subscribe(
+      (result) => {
+        this.uiBlockService.hideUiBlock();
 
-  //       this.translateService.get('TambahBerhasil')
-  //         .subscribe((translation) => {
-  //           this.appAlertService.instantInfo(translation);
-  //         }
-  //       );
+        this.translateService.get('TambahBerhasil')
+          .subscribe((translation) => {
+            this.appAlertService.instantInfo(translation);
+          }
+        );
 
-  //       this.doGet(result.header);
-
-  //     },
-  //     (error) => {
-  //       this.uiBlockService.hideUiBlock();
-  //       this.appAlertService.error(error.errors);
-
-  //       // tambahan
-  //       const result = this.invoiceManualService.convertResponseInvoiceManualComplete(error);
-
-  //       if (result.data) {
-
-  //         this.invoiceManualService.translateInGridError(result.data);
-
-  //         this.dataTablesLainLain = result.data.detailLainLain;
-  //         if (this.dataTablesLainLain === undefined) {
-  //           this.dataTablesLainLain = [];
-  //         }
-  //         this.dataTablesLainLain.slice();
-          
-  //         const transaksi = new InvoiceManualComplete();
-  //         transaksi.header = this.selectedData;
-  //         transaksi.detailLainLain = this.dataTablesLainLain;
-  
-  //         const sessionDataHeader = SessionHelper.getItem('TINVMANUAL-H', this.lzStringService);
-  //         sessionDataHeader.data = transaksi;
-  //         SessionHelper.setItem('TINVMANUAL-H', sessionDataHeader, this.lzStringService);
-  
-  //         // agar secara default semua expandable row terbuka
-  //         const thisRef = this;
-  
-  //         this.dataTablesLainLain.forEach((item) => {
-  //           thisRef.expandedRowsDataTablesLainLain[item.keyIn] = true;
-  //         });
-  //         this.expandedRowsDataTablesLainLain = Object.assign({}, this.expandedRowsDataTablesLainLain);
-  
-  //       }
-  //     },
-  //     () => {
-  //       this.uiBlockService.hideUiBlock();
-  //     }
-  //   );
+      },
+      (error) => {
+        this.uiBlockService.hideUiBlock();
+        this.appAlertService.error(error.errors);      
+      },
+      () => {
+        this.uiBlockService.hideUiBlock();
+      }
+    );
   }
 
   public doEditSave() {
@@ -698,6 +646,33 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   }
 
 
+  public checkPotensiPromo5PembeliPertama(){
+    this.uiBlockService.showUiBlock();
+    this.pembelianBukuService
+    .checkPotensiPromo(this.inputForm.controls.membership.value)
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(
+      (result: StdResponse<PotensiPromo>) => {
+
+        this.inputForm.patchValue({
+          flagDapatPromo5Pertama : result.data.flagDapatPromo5PembeliPertama,
+        })
+
+      },
+      (error) => {
+        this.uiBlockService.hideUiBlock();
+        this.appAlertService.error(error.errors);
+      },
+      () => {
+        this.uiBlockService.hideUiBlock();
+      }
+    );
+    
+
+  }
+
   public getSaldoKasByKodeMember() {
 
     this.uiBlockService.showUiBlock();
@@ -782,6 +757,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     
 
     this.getSaldoKasByKodeMember();
+    this.checkPotensiPromo5PembeliPertama();
     this.clearDetilInitial();
   }
 

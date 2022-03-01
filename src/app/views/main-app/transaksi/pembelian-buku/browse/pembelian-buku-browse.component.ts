@@ -43,13 +43,13 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
   public title = 'PembelianBuku';
 
-  public userForm: FormGroup;
+  public inputForm: FormGroup;
 
   public dataTables: PembelianBukuBrowseModel[] = [];
   public numberOfRowsDataTables = 5;
   public isLoadingResultsDataTables = false;
   public totalRecordsDataTables = 0;
-  public colsUserDataTables: any[];
+  public column: any[];
 
   public pagingSearch: StdPagingRequest = null;
   public firstSearch = 0;
@@ -102,10 +102,8 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
   public ngOnInit() {
     this.breadCrumbService.sendReloadInfo('reload');
-    this.initUserForm();
+    this.initinputForm();
     this.initRadioButtonDeposit();
-    this.initComboStatus();
-    this.initColsUserDataTables();
     this.dataBridging();
   }
 
@@ -118,20 +116,19 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     this.cdRef.detectChanges();
   }
 
-  private initUserForm() {
+  private initinputForm() {
 
-    this.userForm = this.fb.group({
-      nomor: [''],
-      nama: [''],
-      status: [''],
-      fltodep: [''],
+    this.inputForm = this.fb.group({
+      nomorBon: [''],
+      tanggalAwal: [''],
+      tanggalAkhir: [''],
     });
 
     this.paramsSearch = {
-      // nomor: this.userForm.controls.nomor.value,
-      // nama: this.userForm.controls.nama.value,
-      // status: this.userForm.controls.status.value,
-      // fltodep: this.userForm.controls.fltodep.value,
+      // nomor: this.inputForm.controls.nomor.value,
+      // nama: this.inputForm.controls.nama.value,
+      // status: this.inputForm.controls.status.value,
+      // fltodep: this.inputForm.controls.fltodep.value,
     };
 
   }
@@ -162,70 +159,24 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     );
   }
 
-  private initComboStatus() {
-    this.uiBlockService.showUiBlock();
-
-    const searchParams = {
-      rectyp: 'INVSTAT',
-    };
-    const sort: any = {
-      rectxt: 'asc',
-    };
-
-    this.comboConstantsService
-      .search(searchParams, sort)
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
-      .toPromise()
-      .then(
-        (result: StdResponse<ComboConstants[]>) => {
-          this.uiBlockService.hideUiBlock();
-
-          this.comboStatus = result.data.map(
-            item => new Object({label: item.rectxt, value: item.reccode })
-          );
-          this.comboStatus.push(new Object({label: '', value: '' }));
-  
-        },
-        (error) => {
-          this.uiBlockService.hideUiBlock();
-        },
-      );
-  }
 
   public search() {
 
     this.isLoadingResultsDataTables = false;
-    this.uiBlockService.showUiBlock();
+    this.uiBlockService.showUiBlock();  
 
-    let nomorFilter = null;
-    let namaFilter = null;
-    let statusFilter = null;
-    let fltodepFilter = null;
-
-    if (this.userForm.value.nomor) {
-      nomorFilter = this.userForm.value.nomor;
+    if (this.inputForm.value.nomorBon) {
+      this.paramsSearch.nomorBon = this.inputForm.value.nomorBon;
     }
 
-    if (this.userForm.value.nama) {
-      namaFilter = this.userForm.value.nama;
+    if (this.inputForm.value.tanggalAwal) {
+      this.paramsSearch.tanggalAwal = this.inputForm.value.tanggalAwal;
     }
 
-    if (this.userForm.value.status) {
-      statusFilter = this.userForm.value.status;
+    if (this.inputForm.value.tanggalAkhir) {
+      this.paramsSearch.tanggalAkhir = this.inputForm.value.tanggalAkhir;
     }
 
-    if (this.userForm.value.fltodep) {
-      fltodepFilter = this.userForm.value.fltodep;
-    }
-
-    this.paramsSearch = {
-      // nomor: nomorFilter,
-      // customer: namaFilter,
-      // status: statusFilter,
-      // fltodep: fltodepFilter,
-    };
 
     this.pembelianBukuService
     .search(this.paramsSearch)
@@ -244,7 +195,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
         console.log('dataTables ===>', this.dataTables);
         
-        this.totalRecordsDataTables = result.meta.pagination.dataCount;
+        this.totalRecordsDataTables = result?.meta?.pagination?.dataCount;
 
       },
       (error) => {
@@ -291,7 +242,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
           this.isLoadingResultsDataTables = false;
           this.uiBlockService.hideUiBlock();
           this.dataTables = result.data;
-          this.totalRecordsDataTables = result.meta.pagination.dataCount;
+          this.totalRecordsDataTables = result?.meta?.pagination?.dataCount;
         },
         (error) => {
           this.isLoadingResultsDataTables = false;
@@ -308,18 +259,6 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
 
   public refreshDataDataTables() {
     this.search();
-  }
-
-  public initColsUserDataTables() {
-    this.colsUserDataTables = [
-      { field: 'nomor', header: 'Nomor', rtl: false, type: 'string', width: '150px' },
-      { field: 'tgtrn', header: 'Tanggal', rtl: false, type: 'string', width: '100px' },
-      { field: 'nama', header: 'Nama', rtl: false, type: 'string', width: '220px' },
-      { field: 'status', header: 'StatusInvoice', rtl: false, type: 'string', width: '100px' },
-      { field: 'dpp', header: 'DPP', rtl: true, type: 'string', width: '120px' },
-      { field: 'ppn', header: 'PPN', rtl: true, type: 'string', width: '120px' },
-      { field: 'fltodep', header: 'Deposit', rtl: false, type: 'string', width: '80px' },
-    ];
   }
 
   public editDataTables(data: InvoiceHeader) {
@@ -347,10 +286,10 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
         // simpan data layar browse saat ini agar nanti sewaktu kembali ke layar browse,
         // layar browse dapat menampilkan data yang sama sebelum ke layar transaksi      
         const browseScreenData = { 
-          nomor: this.userForm.controls.nomor.value,
-          nama: this.userForm.controls.nama.value,
-          status: this.userForm.controls.status.value,
-          fltodep: this.userForm.controls.fltodep.value,
+          nomor: this.inputForm.controls.nomor.value,
+          nama: this.inputForm.controls.nama.value,
+          status: this.inputForm.controls.status.value,
+          fltodep: this.inputForm.controls.fltodep.value,
 
           firstSearch: this.firstSearch,
           fromDetail: false };
@@ -387,13 +326,14 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     // simpan data layar browse saat ini agar nanti sewaktu kembali ke layar browse,
     // layar browse dapat menampilkan data yang sama sebelum ke layar transaksi      
     const browseScreenData = { 
-      nomor: this.userForm.controls.nomor.value,
-      nama: this.userForm.controls.nama.value,
-      status: this.userForm.controls.status.value,
-      fltodep: this.userForm.controls.fltodep.value,
+      // nomorBon: this.inputForm.controls.nomorBon.value,
+      // nama: this.inputForm.controls.nama.value,
+      // status: this.inputForm.controls.status.value,
+      // fltodep: this.inputForm.controls.fltodep.value,
 
-      firstSearch: this.firstSearch,
-      fromDetail: false };
+      // firstSearch: this.firstSearch,
+      // fromDetail: false 
+    };
 
     SessionHelper.setItem('TINVMANUAL-BROWSE-SCR', browseScreenData, this.lzStringService);
 
@@ -417,7 +357,7 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
         // karena layar ini dapat dipanggil dari master jadwal perulangan, maka harus diperiksa
         // bila ini dari master jadwal perulangan, maka isi filter diisi default semua
 
-        this.userForm.patchValue({
+        this.inputForm.patchValue({
           nomor: browseScreenData.nomor ? browseScreenData.nomor: '',
           nama: browseScreenData.nama ? browseScreenData.nama: '',
           status: browseScreenData.status ? browseScreenData.status: '',
@@ -429,10 +369,10 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
         }
 
         this.paramsSearch = {
-          // nomor: this.userForm.controls.nomor.value,
-          // nama: this.userForm.controls.nama.value,
-          // status: this.userForm.controls.status.value,
-          // fltodep: this.userForm.controls.fltodep.value,
+          // nomor: this.inputForm.controls.nomor.value,
+          // nama: this.inputForm.controls.nama.value,
+          // status: this.inputForm.controls.status.value,
+          // fltodep: this.inputForm.controls.fltodep.value,
         };
     
       }
