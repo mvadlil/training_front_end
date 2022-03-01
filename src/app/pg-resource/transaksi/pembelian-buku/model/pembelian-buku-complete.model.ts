@@ -6,10 +6,12 @@ import { DetailPembayaran } from '../../invoice/model/detail-pembayaran.model';
 
 export class PembelianBukuCompleteModel {
 
-
-
     public namaPembeli: string = null;
     public discountHeader: number = null;
+    public ppn: number = null;
+    public dpp: number = null;
+    public netto: number = null;
+    public totalPembayaran: number = null;
     public listBuku : InvoiceDetailLainLain[] = [];
     public listPembayaran : DetailPembayaran[] = [];
     public keterangan: string = null;

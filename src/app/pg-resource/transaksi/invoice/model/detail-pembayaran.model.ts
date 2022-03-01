@@ -2,7 +2,7 @@ import { InvoiceHeader } from './invoice-header.model';
 
 export class DetailPembayaran {
 
-  public header: InvoiceHeader = new InvoiceHeader();
+  // public header: InvoiceHeader = new InvoiceHeader();
 
   public nourut: number = 0;
   public jenisPembayaran: string = null;
