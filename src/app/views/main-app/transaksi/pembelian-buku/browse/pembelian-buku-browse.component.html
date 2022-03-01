@@ -127,7 +127,7 @@
 
               <th [pSortableColumn] = 'columns[3].field'>
                 <div [ngStyle]="(columns[3].rtl) ?  {'text-align': 'right'} : {'text-align': 'left'}">
-                  {{ 'StatusInvoice' | translate }}
+                  {{ 'Keterangan' | translate }}
                   <p-sortIcon [field]='columns[3].field'></p-sortIcon>
                 </div>
               </th>
@@ -159,31 +159,31 @@
             <tr>
               <td>
                 <a href='javascript:void(0);' (click)='editDataTables(row)'>
-                  {{row.nomor}}
+                  {{row.nomorBon}}
                 </a>
               </td>
 
               <td>
-                {{row.tgtrn | dateFormat : 'shortDate' : defaultLanguageState.getDefaultLanguage().locale}}
+                {{row.tanggalBon | dateFormat : 'shortDate' : defaultLanguageState.getDefaultLanguage().locale}}
               </td>
 
               <td>
-                {{row.nama}}
+                {{row.namaPembeli}}
               </td>
 
               <td>
-                {{row.status | translate}}
+                {{row.keterangan | translate}}
               </td>
 
               <td>
                 <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-                  {{row.dpp | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
+                  {{row.DPP | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
                 </div>
               </td>
 
               <td>
                 <div [ngStyle]="{'width': '100%', 'direction': 'rtl'}">
-                  {{row.ppn | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
+                  {{row.PPN | number:'.0': defaultLanguageState.getDefaultLanguage().locale}}
                 </div>
               </td>
 

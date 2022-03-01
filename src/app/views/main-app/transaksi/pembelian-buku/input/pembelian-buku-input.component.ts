@@ -34,6 +34,8 @@ import { Membership } from 'src/app/pg-resource/master/membership/model/membersh
 import { AccordionModule } from 'primeng/accordion';
 import { DetailPembayaran } from 'src/app/pg-resource/transaksi/invoice/model/detail-pembayaran.model';
 
+import { SaldoMember } from 'src/app/pg-resource/master/membership/model/saldo-member.model';
+import { PembelianBukuCompleteModel } from 'src/app/pg-resource/transaksi/pembelian-buku/model/pembelian-buku-complete.model';
 
 @Component({
   selector: 'app-pembelian-buku-input',
@@ -58,6 +60,9 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public mode: string;
 
   public selectedData: InvoiceHeader = null;
+
+
+  public dataToSave:PembelianBukuCompleteModel = null;
 
   // datatables untuk detil lain-lain
   public dataTablesLainLain: InvoiceDetailLainLain[] = [];
@@ -90,7 +95,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public tab2Title = 'DetailPembayaran';
 
   // terkait autocomplete
-  public filteredCustomer: any[];
+  public filteredMembership: any[];
 
   constructor(
     private fb: FormBuilder,
@@ -143,45 +148,32 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
 
   private initInputForm() {
     this.inputForm = this.fb.group({
-      // namaPembeli: [{value: '', disabled: this.isViewOnly}],
-      // customer: [{value: new Customer(), disabled: this.isViewOnly}, Validators.required],
-      // tgtrn: [{value: new Date(), disabled: this.isViewOnly}, Validators.required],
-      // nmcust: [{value: '', disabled: this.isViewOnly}],
-      // nama: [{value: '', disabled: this.isViewOnly}],
-      // alamat: [{value: '', disabled: this.isViewOnly}],
-      // email: [{value: '', disabled: this.isViewOnly}],
-      // status: [{value: 'NOSENT', disabled: this.isViewOnly}],
-      // bruto: [{value: 0, disabled: true}],
-      // totdisc: [{value: 0, disabled: true}],
-      // dpp: [{value: 0, disabled: true}],
-      // ppn: [{value: 0, disabled: true}],
-      // netto: [{value: 0, disabled: true}],
-      // fltodep: [{value: '', disabled: this.isViewOnly}],
-      // nildep: [{value: 0, disabled: true}],
-      // depused: [{value: 0, disabled: false}],
-      // tgjtemp: [{value: new Date(), disabled: this.isViewOnly}, Validators.required],
-      // jumbul: [{value: 0, disabled: true}],
-      // jumsiklus: [{value: 0, disabled: true}],
-      // satsiklus: [{value: '', disabled: true}],
-      // pctdis: [{value: 0, disabled: this.isViewOnly}],
-      // nildis: [{value: 0, disabled: this.isViewOnly}],
-      // ketdis: [{value: '', disabled: this.isViewOnly}],
+   
+      kasTitipan: [{value: 0, disabled: this.isViewOnly}],
+      pointMember: [{value: 0, disabled: this.isViewOnly}],
+      kodeMember: [{value: '', disabled: this.isViewOnly}],
+      namaPembeli: [{value: '', disabled: this.isViewOnly}],
+      namaMember: [{value: '', disabled: this.isViewOnly}],
+      membership: [{value: new Membership(), disabled: this.isViewOnly}],
+
+      bruto: [{value: 0, disabled: true}],
+      totdisc: [{value: 0, disabled: true}],
+      dpp: [{value: 0, disabled: true}],
+      ppn: [{value: 0, disabled: true}],
+      netto: [{value: 0, disabled: true}],
+      discHeader: [{value: 0, disabled: this.isViewOnly}],
+      keterangan: [{value: '', disabled: this.isViewOnly}],
+      
+
+
 
       nomor: [{value: '', disabled: this.isViewOnly}],
-      customer: [{value: new Membership(), disabled: this.isViewOnly}],
-      namaPembeli: [{value: '', disabled: this.isViewOnly}],
-      kodeMember: [{value: '', disabled: this.isViewOnly}],
       tgtrn: [{value: new Date(), disabled: this.isViewOnly}, Validators.required],
       nmcust: [{value: '', disabled: this.isViewOnly}],
       nama: [{value: '', disabled: this.isViewOnly}],
       alamat: [{value: '', disabled: this.isViewOnly}],
       email: [{value: '', disabled: this.isViewOnly}],
       status: [{value: 'NOSENT', disabled: this.isViewOnly}],
-      bruto: [{value: 0, disabled: true}],
-      totdisc: [{value: 0, disabled: true}],
-      dpp: [{value: 0, disabled: true}],
-      ppn: [{value: 0, disabled: true}],
-      netto: [{value: 0, disabled: true}],
       fltodep: [{value: '', disabled: this.isViewOnly}],
       nildep: [{value: 0, disabled: true}],
       depused: [{value: 0, disabled: false}],
@@ -189,9 +181,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       jumbul: [{value: 0, disabled: true}],
       jumsiklus: [{value: 0, disabled: true}],
       satsiklus: [{value: '', disabled: true}],
-      pctdis: [{value: 0, disabled: this.isViewOnly}],
       nildis: [{value: 0, disabled: this.isViewOnly}],
-      ketdis: [{value: '', disabled: this.isViewOnly}],
     });
   }
 
@@ -274,9 +264,9 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
         fltodep: (this.selectedData.fltodep ? 'Y' : 'T'),
         nildep: (this.selectedData.nildep === null ? '' : this.selectedData.nildep),
         tgjtemp: (this.selectedData.tgjtemp === null ? '' : new Date(this.selectedData.tgjtemp)),
-        pctdis: (this.selectedData.pctdis === null ? '' : this.selectedData.pctdis),
+        // discHeader: (this.selectedData.discHeader === null ? '' : this.selectedData.discHeader),
         nildis: (this.selectedData.nildis === null ? '' : this.selectedData.nildis),
-        ketdis: (this.selectedData.ketdis === null ? '' : this.selectedData.ketdis),
+        // keterangan: (this.selectedData.keterangan === null ? '' : this.selectedData.keterangan),
       });
 
       if (this.inputForm.controls.fltodep.value === 'Y') {
@@ -336,24 +326,37 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
  }
 
   private fillModel() {
-    this.selectedData.nomor = this.inputForm.controls.nomor.value;
-    this.selectedData.tgtrn = this.inputForm.controls.tgtrn.value;
-    this.selectedData.customer = this.inputForm.controls.customer.value;
-    this.selectedData.nmcust = this.inputForm.controls.nmcust.value;
-    this.selectedData.nama = this.inputForm.controls.nama.value;
-    this.selectedData.alamat = this.inputForm.controls.alamat.value;
-    this.selectedData.email = this.inputForm.controls.email.value;
-    this.selectedData.status = this.inputForm.controls.status.value;
-    this.selectedData.bruto = this.inputForm.controls.bruto.value;
-    this.selectedData.totdisc = this.inputForm.controls.totdisc.value;
-    this.selectedData.dpp = this.inputForm.controls.dpp.value;
-    this.selectedData.ppn = this.inputForm.controls.ppn.value;
-    this.selectedData.netto = this.inputForm.controls.netto.value;
-    this.selectedData.depused = this.inputForm.controls.depused.value;
-    this.selectedData.tgjtemp = this.inputForm.controls.tgjtemp.value;
-    this.selectedData.pctdis = this.inputForm.controls.pctdis.value;
-    this.selectedData.nildis = this.inputForm.controls.nildis.value;
-    this.selectedData.ketdis = this.inputForm.controls.ketdis.value;
+
+    this.dataToSave = new PembelianBukuCompleteModel({
+      namaPembeli : this.inputForm.controls.namaPembeli.value,
+      discountHeader: this.inputForm.controls.discHeader.value,
+      listBuku : this.dataTablesLainLain,
+      listPembayaran : null,
+      keterangan: this.inputForm.controls.keterangan.value,
+      dataMembership: this.inputForm.controls.membership.value,
+    })
+    // this.selectedData.nomor = this.inputForm.controls.nomor.value;
+    // this.selectedData.tgtrn = this.inputForm.controls.tgtrn.value;
+    // this.selectedData.customer = this.inputForm.controls.membership.value;
+    // this.selectedData.nmcust = this.inputForm.controls.nmcust.value;
+    // this.selectedData.nama = this.inputForm.controls.nama.value;
+    // this.selectedData.alamat = this.inputForm.controls.alamat.value;
+    // this.selectedData.email = this.inputForm.controls.email.value;
+    // this.selectedData.status = this.inputForm.controls.status.value;
+    // this.selectedData.bruto = this.inputForm.controls.bruto.value;
+    // this.selectedData.totdisc = this.inputForm.controls.totdisc.value;
+    // this.selectedData.dpp = this.inputForm.controls.dpp.value;
+    // this.selectedData.ppn = this.inputForm.controls.ppn.value;
+    // this.selectedData.netto = this.inputForm.controls.netto.value;
+    // this.selectedData.depused = this.inputForm.controls.depused.value;
+    // this.selectedData.tgjtemp = this.inputForm.controls.tgjtemp.value;
+    // this.selectedData.discHeader = this.inputForm.controls.discHeader.value;
+    // this.selectedData.nildis = this.inputForm.controls.nildis.value;
+    // this.selectedData.keterangan = this.inputForm.controls.keterangan.value;
+
+    console.log('fillmodel ===>',this.dataToSave);
+    
+
 
     if (this.inputForm.controls.fltodep.value === 'Y') {
       this.selectedData.fltodep = true;
@@ -384,64 +387,64 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   }
 
   public doSaveSave() {
-    this.uiBlockService.showUiBlock();
-
+    
     const transaksiKomplit = this.bentukDataUntukDisimpan(); 
+    
+    // this.uiBlockService.showUiBlock();s
+  //   this.invoiceManualService
+  //   .add(transaksiKomplit).pipe(takeUntil(this.ngUnsubscribe))
+  //   .subscribe(
+  //     (result) => {
+  //       // this.uiBlockService.hideUiBlock();
 
-    this.invoiceManualService
-    .add(transaksiKomplit).pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(
-      (result) => {
-        // this.uiBlockService.hideUiBlock();
+  //       this.translateService.get('TambahBerhasil')
+  //         .subscribe((translation) => {
+  //           this.appAlertService.instantInfo(translation);
+  //         }
+  //       );
 
-        this.translateService.get('TambahBerhasil')
-          .subscribe((translation) => {
-            this.appAlertService.instantInfo(translation);
-          }
-        );
+  //       this.doGet(result.header);
 
-        this.doGet(result.header);
+  //     },
+  //     (error) => {
+  //       this.uiBlockService.hideUiBlock();
+  //       this.appAlertService.error(error.errors);
 
-      },
-      (error) => {
-        this.uiBlockService.hideUiBlock();
-        this.appAlertService.error(error.errors);
+  //       // tambahan
+  //       const result = this.invoiceManualService.convertResponseInvoiceManualComplete(error);
 
-        // tambahan
-        const result = this.invoiceManualService.convertResponseInvoiceManualComplete(error);
+  //       if (result.data) {
 
-        if (result.data) {
+  //         this.invoiceManualService.translateInGridError(result.data);
 
-          this.invoiceManualService.translateInGridError(result.data);
-
-          this.dataTablesLainLain = result.data.detailLainLain;
-          if (this.dataTablesLainLain === undefined) {
-            this.dataTablesLainLain = [];
-          }
-          this.dataTablesLainLain.slice();
+  //         this.dataTablesLainLain = result.data.detailLainLain;
+  //         if (this.dataTablesLainLain === undefined) {
+  //           this.dataTablesLainLain = [];
+  //         }
+  //         this.dataTablesLainLain.slice();
           
-          const transaksi = new InvoiceManualComplete();
-          transaksi.header = this.selectedData;
-          transaksi.detailLainLain = this.dataTablesLainLain;
+  //         const transaksi = new InvoiceManualComplete();
+  //         transaksi.header = this.selectedData;
+  //         transaksi.detailLainLain = this.dataTablesLainLain;
   
-          const sessionDataHeader = SessionHelper.getItem('TINVMANUAL-H', this.lzStringService);
-          sessionDataHeader.data = transaksi;
-          SessionHelper.setItem('TINVMANUAL-H', sessionDataHeader, this.lzStringService);
+  //         const sessionDataHeader = SessionHelper.getItem('TINVMANUAL-H', this.lzStringService);
+  //         sessionDataHeader.data = transaksi;
+  //         SessionHelper.setItem('TINVMANUAL-H', sessionDataHeader, this.lzStringService);
   
-          // agar secara default semua expandable row terbuka
-          const thisRef = this;
+  //         // agar secara default semua expandable row terbuka
+  //         const thisRef = this;
   
-          this.dataTablesLainLain.forEach((item) => {
-            thisRef.expandedRowsDataTablesLainLain[item.keyIn] = true;
-          });
-          this.expandedRowsDataTablesLainLain = Object.assign({}, this.expandedRowsDataTablesLainLain);
+  //         this.dataTablesLainLain.forEach((item) => {
+  //           thisRef.expandedRowsDataTablesLainLain[item.keyIn] = true;
+  //         });
+  //         this.expandedRowsDataTablesLainLain = Object.assign({}, this.expandedRowsDataTablesLainLain);
   
-        }
-      },
-      () => {
-        this.uiBlockService.hideUiBlock();
-      }
-    );
+  //       }
+  //     },
+  //     () => {
+  //       this.uiBlockService.hideUiBlock();
+  //     }
+  //   );
   }
 
   public doEditSave() {
@@ -669,7 +672,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
 
   // AUTOCOMPLETE
   // Untuk autocomplete customer
-  public filterCustomer(event) {
+  public filterMembership(event) {
 
     this.uiBlockService.showUiBlock();
     const searchParams = {
@@ -688,7 +691,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       (result: StdResponse<Membership[]>) => {
         // this.uiBlockService.hideUiBlock();
 
-        this.filteredCustomer = result.data;
+        this.filteredMembership = result.data;
       },
       (error) => {
         this.uiBlockService.hideUiBlock();
@@ -700,10 +703,42 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     );
   }
 
-  // Untuk verifikasi inputan di autocomplete customer
-  public verifikasiAutocompleteCustomer(data: any) {
 
-    console.log('verifikasiAutocompleteCustomer', data)
+  public getSaldoKasByKodeMember() {
+
+    this.uiBlockService.showUiBlock();
+    this.membershipService
+    .getSaldoByKodeMember(this.inputForm.controls.membership.value)
+    .pipe(
+      takeUntil(this.ngUnsubscribe)
+    )
+    .subscribe(
+      (result: StdResponse<SaldoMember>) => {
+
+        console.log('getSaldoKasByKodeMember ===>',result);
+        this.inputForm.patchValue({
+          pointMember : result.data.nilaiPoint,
+          kasTitipan : result.data.nilaiTitipan,
+          namaMember : result.data.namaMembership,
+        })
+
+        // this.filteredMembership = result.data;
+      },
+      (error) => {
+        this.uiBlockService.hideUiBlock();
+        this.appAlertService.error(error.errors);
+      },
+      () => {
+        this.uiBlockService.hideUiBlock();
+      }
+    );
+  }
+
+
+  // Untuk verifikasi inputan di autocomplete customer
+  public verifikasiAutocompleteMembership(data: any) {
+
+    // console.log('verifikasiAutocompleteMembership', data)
 
     let periksa = false;
     if (typeof data === 'string') {
@@ -724,9 +759,9 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
         (result: StdResponse<Membership>) => {
 
           if (result.data) {
-            this.inputForm.controls.customer.patchValue(result.data);
+            this.inputForm.controls.membership.patchValue(result.data);
           } else {
-            this.inputForm.controls.customer.patchValue(new Membership());
+            this.inputForm.controls.membership.patchValue(new Membership());
           }
           // this.uiBlockService.hideUiBlock();
 
@@ -742,24 +777,25 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     }
   }
 
-  public selectedCustomer() {
+  public selectedMembership() {
+    console.log('selectedMembership ===>',this.inputForm.controls.membership.value);
 
-    // this.inputForm.controls.nmcust.patchValue(this.inputForm.controls.customer.value.billcust2);
-    // this.inputForm.controls.nama.patchValue(this.inputForm.controls.customer.value.billnama2);
-    // this.inputForm.controls.alamat.patchValue(this.inputForm.controls.customer.value.billalamat2);
-    // this.inputForm.controls.email.patchValue(this.inputForm.controls.customer.value.billemail2);  
+    this.inputForm.patchValue({
+      kodeMember : this.inputForm.controls.membership.value.kodeMembership,
+      namaMember : this.inputForm.controls.membership.value.namaMember,
+      namaPembeli : this.inputForm.controls.membership.value.namaMembership,
+    })
+    
 
-    this.inputForm.controls.kodeMember.patchValue(this.inputForm.controls.customer.value.kodeMembership);
-    this.inputForm.controls.namaPembeli.patchValue(this.inputForm.controls.customer.value.namaMembership);
-
+    this.getSaldoKasByKodeMember();
     this.clearDetilInitial();
   }
 
   public getBillCustomerIni() {
-    this.inputForm.controls.nmcust.patchValue(this.inputForm.controls.customer.value.nama);
-    this.inputForm.controls.nama.patchValue(this.inputForm.controls.customer.value.billnama);
-    this.inputForm.controls.alamat.patchValue(this.inputForm.controls.customer.value.billalamat);
-    this.inputForm.controls.email.patchValue(this.inputForm.controls.customer.value.billemail);  
+    this.inputForm.controls.nmcust.patchValue(this.inputForm.controls.membership.value.nama);
+    this.inputForm.controls.nama.patchValue(this.inputForm.controls.membership.value.billnama);
+    this.inputForm.controls.alamat.patchValue(this.inputForm.controls.membership.value.billalamat);
+    this.inputForm.controls.email.patchValue(this.inputForm.controls.membership.value.billemail);  
   }
 
   public selectedProduk() {
@@ -853,7 +889,7 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   public hitungNilaiDiskonDariProsen() {
     this.inputForm.controls.nildis.patchValue(0);
     const total = this.inputForm.controls.bruto.value - this.inputForm.controls.totdisc.value;
-    const prosen = this.inputForm.controls.pctdis.value;
+    const prosen = this.inputForm.controls.discHeader.value;
 
     this.inputForm.controls.nildis.patchValue(Math.floor((prosen * total) / 100));
     
@@ -861,11 +897,11 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
   }  
 
   public hitungProsenDariNilai() {
-    this.inputForm.controls.pctdis.patchValue(0);
+    this.inputForm.controls.discHeader.patchValue(0);
     const total = this.inputForm.controls.bruto.value - this.inputForm.controls.totdisc.value;
     const nildis = this.inputForm.controls.nildis.value;
 
-    this.inputForm.controls.pctdis.patchValue((nildis * 100) / total);
+    this.inputForm.controls.discHeader.patchValue((nildis * 100) / total);
 
     this.depusedChanged();
   }
@@ -891,8 +927,8 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
       const mode = data.mode;
 
       if (returnedData) {
-        this.inputForm.controls.customer.patchValue(returnedData);
-        this.selectedCustomer();
+        this.inputForm.controls.membership.patchValue(returnedData);
+        this.selectedMembership();
       }
     },
     () => {

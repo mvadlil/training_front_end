@@ -18,8 +18,8 @@ import { InvoiceManualRoutingModule } from './pembelian-buku.routing';
 import { InvoiceManualService } from 'src/app/pg-resource/transaksi/invoice/invoice-manual.service';
 import { PembelianBukuBrowseComponent } from './browse/pembelian-buku-browse.component';
 import { PembelianBukuInputComponent } from './input/pembelian-buku-input.component';
-import { TabelDetilLainLainComponent } from './input/tabel-detil-lain-lain/tabel-detil-lain-lain.component';
-import { DetilLainLainInputComponent } from './input/tabel-detil-lain-lain/input-detil-lain-lain/detil-lain-lain-input.component';
+import { TabelDetilLainLainComponent } from './input/tabel-detil-pembelian-buku/tabel-detil-pembelian-buku.component';
+import { DetilLainLainInputComponent } from './input/tabel-detil-pembelian-buku/input-detil-pembelian-buku/detil-pembelian-buku-input.component';
 import { CustomerService } from 'src/app/pg-resource/master/customer/customer.service';
 import { TranslateMessageService } from 'src/app/common/common-services/translate.message.service';
 import { ComboConstantsService } from 'src/app/pg-resource/master/common/combo-constants/combo.constants.service';
@@ -30,6 +30,7 @@ import { MembershipService } from 'src/app/pg-resource/master/membership/members
 import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarbuku.service';
 import { DetailPembayaranInputComponent } from './input/tabel-detil-pembayaran/input-detil-pembayaran/detail-pembayaran-input.component';
 import { TabelDetailPembayaranComponent } from './input/tabel-detil-pembayaran/tabel-detail-pembayaran.component';
+import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
 
 @NgModule({
   declarations: [
@@ -86,5 +87,6 @@ import { TabelDetailPembayaranComponent } from './input/tabel-detil-pembayaran/t
     DialogService,
     MembershipService,
     DaftarBukuService,
+    PembelianBukuService,
   ]})
 export class PembelianBukuModule { }

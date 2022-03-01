@@ -12,6 +12,7 @@ import { SortMode, StdPagingRequest } from 'src/app/common/common-model/standar-
 import { StdResponse } from 'src/app/common/common-model/standar-api-response.model';
 import { StdMessageTranslator } from 'src/app/common/common-services/standar-api-message-translator';
 import { Membership } from './model/membership.model';
+import { SaldoMember } from 'src/app/pg-resource/master/membership/model/saldo-member.model';
 
 
 @Injectable()
@@ -23,8 +24,8 @@ export class MembershipService extends BaseService {
   private multiKey = 'items';
   private apiMessages = '';
 
-  private mapperMembership:
-    StdModelMapper<Membership> = new StdModelMapper<Membership>(Membership);
+  private mapperMembership: StdModelMapper<Membership> = new StdModelMapper<Membership>(Membership);
+  private mapperSaldoMembership: StdModelMapper<SaldoMember> = new StdModelMapper<SaldoMember>(SaldoMember);
 
   constructor(private http: HttpClient, 
               private messageTranslator: StdMessageTranslator,
@@ -46,6 +47,11 @@ export class MembershipService extends BaseService {
 
     return responseBody;
   }
+  
+  private requestUrl(extraUri?: string): string {
+    return this.apiUrl + (extraUri ? '/' + extraUri : '');
+  }
+
 
   public search(
     searchParams?: MembershipSearchParams,
@@ -60,9 +66,37 @@ export class MembershipService extends BaseService {
         );
   }
 
-  private requestUrl(extraUri?: string): string {
-    return this.apiUrl + (extraUri ? '/' + extraUri : '');
+
+  public getSaldoByKodeMember(model: Membership): Observable<StdResponse<SaldoMember>> {
+    return this.http.get<StdResponse<SaldoMember>>(this.apiUrl + '/get-by-point', {
+      params: (new HttpParams()).set('namaMember', model.namaMembership)
+    }).pipe(
+      map((res: StdResponse<SaldoMember>) => {
+        let tmp = this.convertResponse(res, this.mapperSaldoMembership);
+        return tmp;
+      }),
+      catchError(res => this.handleError(res, this.appAlertService, this.defaultLanguageState, this.router, this.messageTranslator))
+    );
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   public add(model: Membership): Observable<Membership> {
     return this.http.post<StdResponse<Membership>>(this.apiUrl,
