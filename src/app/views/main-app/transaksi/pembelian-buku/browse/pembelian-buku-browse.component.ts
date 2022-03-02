@@ -176,11 +176,15 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
     if (this.inputForm.value.tanggalAkhir) {
       this.paramsSearch.tanggalAkhir = this.inputForm.value.tanggalAkhir;
     }
+    
 
 
     this.pembelianBukuService
-    .search(this.paramsSearch)
-    .pipe(
+    .search(
+      this.paramsSearch, 
+      null, //this.sortSearch
+      this.pagingSearch
+      )    .pipe(
       takeUntil(this.ngUnsubscribe)
     )
     .subscribe(
@@ -233,7 +237,10 @@ export class PembelianBukuBrowseComponent implements OnInit, OnDestroy, AfterVie
       this.isLoadingResultsDataTables = true;
       this.uiBlockService.showUiBlock();
       this.pembelianBukuService
-      .search(pagination.searchParams, pagination.sorts, pagination.paging)
+      .search(
+        pagination.searchParams, 
+        null, //pagination.sorts 
+        pagination.paging)
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
