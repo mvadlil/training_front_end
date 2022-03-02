@@ -21,10 +21,6 @@ import { ObjectHelper } from 'src/app/helper/object-helper';
 import { DialogService, DynamicDialogRef } from 'primeng';
 import { v4 as uuidv4 } from 'uuid';
 import { ComboConstantsService } from 'src/app/pg-resource/master/common/combo-constants/combo.constants.service';
-import { ComboConstants } from 'src/app/pg-resource/master/common/combo-constants/model/combo.constants.model';
-import { Customer } from 'src/app/pg-resource/master/customer/model/customer.model';
-import { Membership } from 'src/app/pg-resource/master/membership/model/membership.model';
-import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
 import { LaporanPenjualanBukuService } from 'src/app/pg-resource/laporan/laporan-penjualan-buku.service';
 import { LaporanPenjualanBuku } from 'src/app/pg-resource/laporan/model/laporan-penjualan-buku.model';
 

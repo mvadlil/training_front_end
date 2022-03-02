@@ -17,7 +17,7 @@ import { LaporanPenjualanBuku } from './model/laporan-penjualan-buku.model';
 @Injectable()
 export class LaporanPenjualanBukuService extends BaseService {
 
-  private apiUrl = StdConstants.API_ADDRESS + '/api/membership';
+  private apiUrl = StdConstants.API_ADDRESS + '/api/laporan-penjualan-buku';
 
   private singleKey = 'item';
   private multiKey = 'items';
