@@ -305,8 +305,12 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     this.dataToSave = new PembelianBukuCompleteModel({
       namaPembeli : this.inputForm.controls.namaPembeli.value,
       discountHeader: this.inputForm.controls.discHeader.value,
+      dpp: this.inputForm.controls.dpp.value,
+      ppn: this.inputForm.controls.ppn.value,
+      netto: this.inputForm.controls.netto.value,
+      totalPembayaran: this.inputForm.controls.totalPembayaran.value,
       listBuku : this.dataTablesLainLain,
-      listPembayaran : null,
+      listPembayaran : this.dataTablesPembayaran,
       keterangan: this.inputForm.controls.keterangan.value,
       dataMembership: this.inputForm.controls.membership.value,
     })
@@ -367,8 +371,12 @@ export class PembelianBukuInputComponent implements OnInit, OnDestroy, AfterView
     this.dataToSave = new PembelianBukuCompleteModel({
       namaPembeli : this.inputForm.controls.namaPembeli.value,
       discountHeader: this.inputForm.controls.discHeader.value,
+      dpp: this.inputForm.controls.dpp.value,
+      ppn: this.inputForm.controls.ppn.value,
+      netto: this.inputForm.controls.netto.value,
+      totalPembayaran: this.inputForm.controls.totalPembayaran.value,
       listBuku : this.dataTablesLainLain,
-      listPembayaran : null,
+      listPembayaran : this.dataTablesPembayaran,
       keterangan: this.inputForm.controls.keterangan.value,
       dataMembership: this.inputForm.controls.membership.value,
     })

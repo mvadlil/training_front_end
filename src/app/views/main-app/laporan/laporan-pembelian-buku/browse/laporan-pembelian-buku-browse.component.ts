@@ -25,6 +25,8 @@ import { ComboConstants } from 'src/app/pg-resource/master/common/combo-constant
 import { Customer } from 'src/app/pg-resource/master/customer/model/customer.model';
 import { Membership } from 'src/app/pg-resource/master/membership/model/membership.model';
 import { MembershipService } from 'src/app/pg-resource/master/membership/membership.service';
+import { LaporanPenjualanBukuService } from 'src/app/pg-resource/laporan/laporan-penjualan-buku.service';
+import { LaporanPenjualanBuku } from 'src/app/pg-resource/laporan/model/laporan-penjualan-buku.model';
 
 @Component({
   selector: 'app-laporan-pembelian-buku-browse',
@@ -45,7 +47,7 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
 
   public radioButtonStatusKonfirmasi: any[];
 
-  public dataTables: Membership[] = [];
+  public dataTables: LaporanPenjualanBuku[] = [];
   public numberOfRowsDataTables = 5;
   public isLoadingResultsDataTables = false;
   public totalRecordsDataTables = 0;
@@ -67,7 +69,7 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
     private confirmationService: ConfirmationService,
     private uiBlockService: UiBlockService,
     private translateService: TranslateService,
-    private membershipService: MembershipService,
+    private laporanPenjualanBukuService: LaporanPenjualanBukuService,
     private feComboConstantService: FEComboConstantService,
     private comboConstantsService: ComboConstantsService,
     private route: ActivatedRoute,
@@ -83,12 +85,10 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
       perPage: this.numberOfRowsDataTables
     };
     this.sortSearch = {
-      namaMembership: 'asc',
-      kodeMembership: 'asc',
+      bulan: 'asc'
     };
     this.searchParamsSearch = {
-      namaMembership: null,
-      kodeMembership: null,
+      bulan: null
     };
   }
 
@@ -112,24 +112,25 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
   private initUserForm() {
 
     this.userForm = this.fb.group({
-      namaMembership: [''],
-      kodeMembership: [''],
+      bulan: [''],
+      totalQtyPenjulanBuku: [''],
+      totalNominalPenjulanBuku: ['']
     });
 
-    let namaMembership = null;
-    let kodeMembership = null;
+    let bulan = null;
+    let totalQtyPenjulanBuku = null;
 
-    if (this.userForm.value.namaMembership) {
-      namaMembership = this.userForm.value.namaMembership;
+    if (this.userForm.value.bulan) {
+      bulan = this.userForm.value.bulan;
     }
 
-    if (this.userForm.value.kodeMembership) {
-      kodeMembership = this.userForm.value.kodeMembership;
+    if (this.userForm.value.totalQtyPenjulanBuku) {
+      totalQtyPenjulanBuku = this.userForm.value.totalQtyPenjulanBuku;
     }
 
     this.searchParamsSearch = {
-      namaMembership: namaMembership,
-      kodeMembership: kodeMembership,
+      bulan: bulan,
+      totalQtyPenjulanBuku: totalQtyPenjulanBuku,
     };
 
   }
@@ -139,23 +140,17 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
     this.isLoadingResultsDataTables = false;
     this.uiBlockService.showUiBlock();
 
-    let namaMembership = null;
-    let kodeMembership = null;
+    let bulan = null;
 
-    if (this.userForm.value.namaMembership) {
-      namaMembership = this.userForm.value.namaMembership;
-    }
-
-    if (this.userForm.value.kodeMembership) {
-      kodeMembership = this.userForm.value.kodeMembership;
+    if (this.userForm.value.bulan) {
+      bulan = this.userForm.value.bulan;
     }
 
     this.searchParamsSearch = {
-      namaMembership: namaMembership,
-      kodeMembership: kodeMembership,
+      bulan: bulan,
     };
 
-    this.membershipService
+    this.laporanPenjualanBukuService
     .search(
       this.searchParamsSearch, 
       this.sortSearch, 
@@ -165,7 +160,7 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
       takeUntil(this.ngUnsubscribe)
     )
     .subscribe(
-      (result: StdResponse<Membership[]>) => {
+      (result: StdResponse<LaporanPenjualanBuku[]>) => {
         this.isLoadingResultsDataTables = false;
         this.uiBlockService.hideUiBlock();
         this.dataTables = result.data;
@@ -207,13 +202,13 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
 
       this.isLoadingResultsDataTables = true;
       this.uiBlockService.showUiBlock();
-      this.membershipService
+      this.laporanPenjualanBukuService
       .search(pagination.searchParams, pagination.sorts, pagination.paging)
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (result: StdResponse<Membership[]>) => {
+        (result: StdResponse<LaporanPenjualanBuku[]>) => {
           this.isLoadingResultsDataTables = false;
           this.uiBlockService.hideUiBlock();
           this.dataTables = result.data;
@@ -239,86 +234,15 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
 
   public initColsUserDataTables() {
     this.colsUserDataTables = [
-      { field: 'hapus', header: 'Delete', rtl: false, type: 'string', width: '50px' },
-      { field: 'namaMembership', header: 'namaMembership', rtl: false, type: 'string', width: '250px' },
-      { field: 'kodeMembership', header: 'kodeMembership', rtl: false, type: 'string', width: '250px' },
+      { field: 'bulan', header: 'Bulan', rtl: false, type: 'string', width: '150px' },
+      { field: 'totalQtyPenjulanBuku', header: 'TotalQtyPenjulanBuku', rtl: false, type: 'string', width: '250px' },
+      { field: 'totalNominalPenjulanBuku', header: 'TotalNominalPenjulanBuku', rtl: false, type: 'string', width: '250px' },
     ];
   }
 
-  public editDataTables(data: Membership) {
-    this.uiBlockService.showUiBlock();
+ 
 
-    this.membershipService.get(data)
-    .pipe(takeUntil(this.ngUnsubscribe)).subscribe(
-      (result) => {
-        this.uiBlockService.hideUiBlock();
-
-        this.router.navigate(['./input'], { relativeTo: this.route });
-
-        // simpan data transaksi yang dipilih untuk di edit ini ke session storage
-        const trxScreenData = {
-          data: result.data,
-          mode: 'edit',
-          prevTabName: '',
-          prevTab: 0,
-          tableFirst: 0,
-          tableNumberOfRows: 0,
-          urlAsal: this.router.url, // ini berisi : '/master/customer'
-        };
-        SessionHelper.setItem('MMEMBERSHIP-H', trxScreenData, this.lzStringService);
-
-        // simpan data layar browse saat ini agar nanti sewaktu kembali ke layar browse,
-        // layar browse dapat menampilkan data yang sama sebelum ke layar transaksi      
-        const browseScreenData = { 
-          namaMembership: this.userForm.controls.namaMembership.value,
-          kodeMembership: this.userForm.controls.kodeMembership.value,
-
-          firstSearch: this.firstSearch,
-          fromDetail: false };
-
-        SessionHelper.setItem('MMEMBERSHIP-BROWSE-SCR', browseScreenData, this.lzStringService);
-
-      },
-      (error) => {
-        this.uiBlockService.hideUiBlock();
-        this.appAlertService.error(error.errors);
-      },
-      () => {
-        this.uiBlockService.hideUiBlock();
-      }
-    );
- }
-
-  public addDataTables() {
-
-    const transaksiJurnalComplete = new Customer();
-    transaksiJurnalComplete.flakt = true;
-    
-    const sessionData = {
-      data: transaksiJurnalComplete,
-      mode: 'add',
-      prevTabName: '',
-      prevTab: 0,
-      tableFirst: 0,
-      tableNumberOfRows: 0,
-      urlAsal: this.router.url, // ini berisi : '/transaksi/transaksi-jurnal'
-    };
-    SessionHelper.setItem('MMEMBERSHIP-H', sessionData, this.lzStringService);
-
-    // simpan data layar browse saat ini agar nanti sewaktu kembali ke layar browse,
-    // layar browse dapat menampilkan data yang sama sebelum ke layar transaksi      
-    const browseScreenData = { 
-      namaMembership: this.userForm.controls.namaMembership.value,
-      kodeMembership: this.userForm.controls.kodeMembership.value,
-
-      firstSearch: this.firstSearch,
-      fromDetail: false };
-
-    SessionHelper.setItem('MMEMBERSHIP-BROWSE-SCR', browseScreenData, this.lzStringService);
-
-    this.router.navigate(['./input'], { relativeTo: this.route });
-
-  }
+ 
 
   onDivDataTableResized(event: ResizedEvent) {
     const width = event.newWidth - 52; // 14 ini padding kiri kanan dari area content
@@ -357,48 +281,8 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
     }
   }
 
-  private doDeleteDelete(data: Membership) {
-    this.uiBlockService.showUiBlock();
-    this.membershipService
-      .delete(data)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        (result) => {
+  
 
-          this.uiBlockService.hideUiBlock();
-          this.translateService.get('HapusBerhasil')
-            .subscribe((translation) => {
-              this.appAlertService.instantInfo(translation);
-            }
-          );
-
-          this.refreshDataDataTables();
-
-        },
-        (error: any) => {
-          this.appAlertService.error(error.errors);
-        },
-          () => { this.uiBlockService.hideUiBlock(); }
-      );
-  }
-
-  public delete(data: Membership) {
-    this.translateService.get('HapusTransaksiNomor')
-      .subscribe((translation) => {
-
-      this.confirmationService.confirm({
-        message: translation + ' ' + data.namaMembership + ' ?',
-        header: 'Confirmation',
-        icon: 'pi pi-exclamation-triangle',
-        accept: () => {
-              this.doDeleteDelete(data);
-        },
-        reject: () => {
-        }
-      });
-
-      }
-    );
-  }
+ 
 
 }

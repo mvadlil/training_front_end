@@ -1,13 +1,10 @@
-import { InvoiceHeader } from './invoice-header.model';
+import { StdFieldMappingHint } from "src/app/common/common-class/standar-api-mapper";
 
-export class DetailPembayaran {
+export class LaporanPenjualanBuku {
 
-  // public header: InvoiceHeader = new InvoiceHeader();
-
-  public nourut: number = 0;
-  public jenisPembayaran: string = null;
-  public nilaiRupiah: number = 0;
-  public nilaiPoint: number = 0;
+  public bulan: number = null;
+  public TotalQtyPenjualanBuku: number = null;
+  public TotalNominalPenjualanBuku: number = null;
 
   // untuk input di grid
   public keyIn: string = null;
@@ -28,7 +25,7 @@ export class DetailPembayaran {
   public tglupd: Date = null;
   public jamupd: string = null;
 
-  constructor(initial?: Partial<DetailPembayaran>) {
+  constructor(initial?: Partial<LaporanPenjualanBuku>) {
     Object.assign(this, initial);
   }
 }
