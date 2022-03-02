@@ -26,6 +26,7 @@ import { DaftarBukuService } from 'src/app/pg-resource/master/daftarbuku/daftarb
 import { PembelianBukuService } from 'src/app/pg-resource/transaksi/pembelian-buku/pembelian-buku.service';
 import { LaporanPembelianBrowseComponent } from './browse/laporan-pembelian-buku-browse.component';
 import { LaporanPembelianBukuRoutingModule } from './laporan-pembelian-buku.routing';
+import { LaporanPenjualanBukuService } from 'src/app/pg-resource/laporan/laporan-penjualan-buku.service';
 
 @NgModule({
   declarations: [
@@ -76,5 +77,6 @@ import { LaporanPembelianBukuRoutingModule } from './laporan-pembelian-buku.rout
     MembershipService,
     DaftarBukuService,
     PembelianBukuService,
+    LaporanPenjualanBukuService
   ]})
 export class LaporanPembelianBukuModule { }
