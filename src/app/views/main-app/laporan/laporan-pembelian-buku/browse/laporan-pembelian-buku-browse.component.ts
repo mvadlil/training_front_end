@@ -160,7 +160,8 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
         this.isLoadingResultsDataTables = false;
         this.uiBlockService.hideUiBlock();
         this.dataTables = result.data;
-        this.totalRecordsDataTables = result.meta.pagination.dataCount;
+        this.totalRecordsDataTables = result?.meta?.pagination?.dataCount;
+        
         // this.totalRecordsDataTables = result.data.length;
 
       },
@@ -208,7 +209,7 @@ export class LaporanPembelianBrowseComponent implements OnInit, OnDestroy, After
           this.isLoadingResultsDataTables = false;
           this.uiBlockService.hideUiBlock();
           this.dataTables = result.data;
-          this.totalRecordsDataTables = result.meta.pagination.dataCount;
+          this.totalRecordsDataTables = result?.meta?.pagination?.dataCount;
         },
         (error) => {
           this.isLoadingResultsDataTables = false;
